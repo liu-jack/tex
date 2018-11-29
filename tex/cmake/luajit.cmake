@@ -1,0 +1,4 @@
+ADD_LIBRARY(luajit STATIC IMPORTED)
+SET_TARGET_PROPERTIES(luajit PROPERTIES IMPORTED_LOCATION /usr/local/lib/libluajit-5.1.a)
+
+INCLUDE_DIRECTORIES(/usr/local/include/luajit-2.0)

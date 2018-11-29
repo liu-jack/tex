@@ -1,0 +1,62 @@
+#ifndef _SDP_RETURNCODE_HPP_
+#define _SDP_RETURNCODE_HPP_
+
+#include <string>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include "sdp/Sdp.h"
+using namespace std;
+using namespace mfw;
+
+namespace mfw
+{
+enum PROTOCOL_RETURN_CODE
+{
+	SDPSERVERSUCCESS = 0,
+	SDPSERVERUNKNOWNERR = -999990,
+	SDPSERVERNOFUNCERR = -999991,
+	SDPSERVERNOSERVICEERR = -999992,
+	SDPSERVERQUEUETIMEOUT = -999993,
+	SDPASYNCCALLTIMEOUT = -999994,
+	SDPINVOKETIMEOUT = -999995,
+	SDPPROXYCONNECTERR = -999996,
+	SDPSERVEROVERLOAD = -999997,
+	SDPADAPTERNULL = -999998,
+};
+static inline const char *etos(PROTOCOL_RETURN_CODE e)
+{
+	switch (e)
+	{
+		case SDPSERVERSUCCESS: return "SDPSERVERSUCCESS";
+		case SDPSERVERUNKNOWNERR: return "SDPSERVERUNKNOWNERR";
+		case SDPSERVERNOFUNCERR: return "SDPSERVERNOFUNCERR";
+		case SDPSERVERNOSERVICEERR: return "SDPSERVERNOSERVICEERR";
+		case SDPSERVERQUEUETIMEOUT: return "SDPSERVERQUEUETIMEOUT";
+		case SDPASYNCCALLTIMEOUT: return "SDPASYNCCALLTIMEOUT";
+		case SDPINVOKETIMEOUT: return "SDPINVOKETIMEOUT";
+		case SDPPROXYCONNECTERR: return "SDPPROXYCONNECTERR";
+		case SDPSERVEROVERLOAD: return "SDPSERVEROVERLOAD";
+		case SDPADAPTERNULL: return "SDPADAPTERNULL";
+		default: return "";
+	}
+}
+static inline bool stoe(const string &s, PROTOCOL_RETURN_CODE &e)
+{
+	if (s == "SDPSERVERSUCCESS") { e = SDPSERVERSUCCESS; return true; }
+	if (s == "SDPSERVERUNKNOWNERR") { e = SDPSERVERUNKNOWNERR; return true; }
+	if (s == "SDPSERVERNOFUNCERR") { e = SDPSERVERNOFUNCERR; return true; }
+	if (s == "SDPSERVERNOSERVICEERR") { e = SDPSERVERNOSERVICEERR; return true; }
+	if (s == "SDPSERVERQUEUETIMEOUT") { e = SDPSERVERQUEUETIMEOUT; return true; }
+	if (s == "SDPASYNCCALLTIMEOUT") { e = SDPASYNCCALLTIMEOUT; return true; }
+	if (s == "SDPINVOKETIMEOUT") { e = SDPINVOKETIMEOUT; return true; }
+	if (s == "SDPPROXYCONNECTERR") { e = SDPPROXYCONNECTERR; return true; }
+	if (s == "SDPSERVEROVERLOAD") { e = SDPSERVEROVERLOAD; return true; }
+	if (s == "SDPADAPTERNULL") { e = SDPADAPTERNULL; return true; }
+	return false;
+}
+
+}
+
+
+#endif

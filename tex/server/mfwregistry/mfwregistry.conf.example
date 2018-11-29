@@ -1,0 +1,12 @@
+<Main>
+    <DB>
+        dbhost  = TEMPLATE_DBHOST
+        dbname  = db_tex
+        dbuser  = TEMPLATE_DB_USER
+        dbpass  = TEMPLATE_DB_PASSWD
+        dbport  = 3306
+        charset = utf8
+    </DB>
+	
+	ReloadInterval = 10
+</Main>

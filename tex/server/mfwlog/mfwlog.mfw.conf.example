@@ -1,0 +1,30 @@
+<mfw>
+    <application>
+        <client>
+            locator                     = tex.mfwregistry.QueryObj@TEMPLATE_LOCATOR
+            refresh-endpoint-interval   = 60000
+            sync-invoke-timeout         = 3000
+            async-invoke-timeout        = 5000
+            connect-timeout             = 1000
+            asyncthread                 = 3
+        </client>
+
+        <server>
+            app      = tex
+            server   = TEMPLATE_SERVER_NAME
+            logpath  = /data/applog
+            loglevel = INFO
+            log      = 
+
+            <Service_1>
+                service    = tex.TEMPLATE_SERVER_NAME.LogObj
+                endpoint   = TEMPLATE_ENDPOINT_LogObj
+                protocol   = mfw
+                threads    = 5
+                maxconns   = 1024
+                queuecap   = 10240
+                queuetimeout = 5000
+            </Service_1>
+        </server>
+    </application>
+</mfw>
