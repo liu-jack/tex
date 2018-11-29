@@ -1,0 +1,6 @@
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/src)
+
+ADD_EXECUTABLE(sdp2luadoc sdp2luadoc.cpp)
+TARGET_LINK_LIBRARIES(sdp2luadoc parse)
+
+INSTALL(TARGETS sdp2luadoc DESTINATION bin EXPORT mfw-libs)

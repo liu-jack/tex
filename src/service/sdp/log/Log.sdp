@@ -1,0 +1,20 @@
+module mfw
+{
+	struct LogBaseInfo
+	{
+		0 optional string sAppName;
+		1 optional string sServerName;
+		2 optional string sDivision;
+	};
+	
+	struct LogDataItem
+	{
+		0 optional unsigned int iTime;
+		1 optional string sData;
+	};
+
+    interface Log
+    {
+        int logRemote(LogBaseInfo info, map<string, vector<LogDataItem> > mFileData);
+    };
+};

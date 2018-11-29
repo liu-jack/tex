@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<file name="MTTD.GameServer_stat" type="hourlog" >
+		<log name="start_stage_td" desc="开始挑战塔防关卡">
+			<field desc="时间" column="time" type="datetime" />
+			<field desc="U" />
+			<field desc="类型" match="start_stage_td" />
+			<field desc="角色ID" column="roleid" type="uint64" />
+			<field desc="关卡ID" column="stageid" type="uint32" />
+			<field desc="随机数" />
+			<field desc="是否首次" column="isfirst" type="uint32" />
+			<field desc="玩家等级" column="level" type="uint32" />
+		</log>
+		
+		<log name="finish_stage_td" desc="完成挑战塔防关卡">
+			<field desc="时间" column="time" type="datetime" />
+			<field desc="U" />
+			<field desc="类型" match="finish_stage_td" />
+			<field desc="角色ID" column="roleid" type="uint64" />
+			<field desc="关卡ID" column="stageid" type="uint32" />
+			<field desc="随机数" />
+			<field desc="分数" column="score" type="uint32" />
+			<field desc="是否作弊" column="ischeat" type="uint32" />
+			<field desc="耗时" column="used_time" type="uint32" />
+			<field desc="是否首次" column="isfirst" type="uint32" />
+			<field desc="玩家等级" column="level" type="uint32" />
+		</log>
+	</file>
+</root>

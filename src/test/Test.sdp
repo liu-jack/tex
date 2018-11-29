@@ -1,0 +1,32 @@
+namespace Test
+{
+enum NUMBER
+{
+    NUMBER_1 = 1,
+    NUMBER_2,
+};
+
+struct Student {
+    0   optional unsigned long iUid; 
+    1   optional string sName;
+    2   optional unsigned int iAge;
+    3   optional map<string,string> mSecret;
+};
+
+struct Teacher {
+    0   optional unsigned int iId;
+    1   optional string sName;
+};
+
+struct Teachers {
+    0   optional vector<Teacher> vTeacher;
+};
+
+struct Class {
+    0   require unsigned int iId;
+    1   optional string sName;
+    2   optional vector<Student> vStudent;
+    3   optional vector<char> vData;
+};
+
+};

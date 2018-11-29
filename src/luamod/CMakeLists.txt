@@ -1,0 +1,7 @@
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/src)
+
+ADD_LIBRARY(luamod LuaModule.cpp)
+TARGET_LINK_LIBRARIES(luamod sdplua)
+
+INSTALL(TARGETS luamod DESTINATION lib EXPORT mfw-libs)
+INSTALL(FILES LuaModule.h DESTINATION include/luamod)

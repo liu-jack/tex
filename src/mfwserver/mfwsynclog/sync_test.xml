@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<variable name="zoneid">22</variable>
+	<logpath>./log_${zoneid}</logpath>
+	<progress_file>./sync_progress_${zoneid}.info</progress_file>
+	<synclog_path>.</synclog_path>
+	<synclog_prefix>sync_log_${zoneid}</synclog_prefix>
+	<sync_interval>5</sync_interval>
+	<lines_per_loop>10</lines_per_loop>
+	<dbconf>
+		<host>127.0.0.1</host>
+		<port>3306</port>
+		<database>db_game_stat_${zoneid}</database>
+		<user>root</user>
+		<password></password>
+		<charset>utf8</charset>
+	</dbconf>
+</root>

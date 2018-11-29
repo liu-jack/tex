@@ -1,0 +1,8 @@
+FILE(GLOB subdirs RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *)
+FOREACH(dir ${subdirs})
+    IF (IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${dir})
+        build_sdp(mfw-${dir} ${CMAKE_CURRENT_SOURCE_DIR}/${dir} NO-LIBRARY)
+        GET_PROPERTY(header_files GLOBAL PROPERTY sdp-headers-mfw-${dir})
+        INSTALL(FILES ${header_files} DESTINATION include/${dir})
+    ENDIF()
+ENDFOREACH()

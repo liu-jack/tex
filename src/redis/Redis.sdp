@@ -1,0 +1,40 @@
+module mfw
+{
+	enum RedisResult
+	{
+		RedisResult_NoData = -999980,
+		//RedisResult_VerMismatch = -999981,
+	};
+	
+	/*struct VersionedStringKeyValue
+	{
+		0 optional unsigned int	iVersion;
+		1 optional string		sKey;
+		2 optional string		sValue;
+	};*/
+
+    interface Redis
+    {
+        int call(vector<string> vCmdArg, out string sResult);
+        int callBatch(vector<vector<string> > vAllCmdArg, out vector<string> vResult);
+        
+        int getString(string sKey, out string sValue);
+        int setString(string sKey, string sValue);
+        int delString(string sKey);
+        
+		int getStringBatch(vector<string> vKey, out map<string, string> mKeyValue);
+		int setStringBatch(map<string, string> mSetValue);
+		int delStringBatch(vector<string> vDelKey);
+		
+        int incr(string sKey, long iNum, out long iValue);
+        int decr(string sKey, long iNum, out long iValue);
+        
+        /*int getVerString(string sKey, out string sValue, out unsigned int iVersion);
+		int setVerString(string sKey, string sValue, unsigned int iVersion);
+		int delVerString(string sKey, unsigned int iVersion);
+		
+		int getVerStringBatch(vector<string> vKey, out vector<VersionedStringKeyValue> vValue);
+		int setVerStringBatch(vector<VersionedStringKeyValue> vSetValue, out map<string, int> mResult);
+		int delVerStringBatch(map<string, unsigned int> mDelKey, out map<string, int> mResult);*/
+    };
+};

@@ -1,0 +1,10 @@
+module mfw
+{
+    interface Admin
+    {
+        void shutdown();
+
+        string notify(string command);
+    };
+};
+

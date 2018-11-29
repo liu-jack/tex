@@ -1,0 +1,21 @@
+module mfw
+{
+    struct RequestPacket
+    {
+        0  optional bool		 bIsOneWay;
+        1  optional unsigned int iRequestId;
+        2  optional string       sServiceName;
+        3  optional string       sFuncName;
+        4  optional string		 sReqPayload;
+        5  optional unsigned int iTimeout;
+        6  optional map<string, string> context;
+    };
+
+    struct ResponsePacket
+    {
+        0 optional int          iMfwRet;
+        1 optional unsigned int iRequestId;
+        2 optional string	  	sRspPayload;
+        3 optional map<string, string> context;
+    };
+};

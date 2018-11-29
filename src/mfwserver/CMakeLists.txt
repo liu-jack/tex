@@ -1,0 +1,3 @@
+ADD_SUBDIRECTORY(mfwregistry)
+ADD_SUBDIRECTORY(mfwlog)
+ADD_SUBDIRECTORY(mfwsynclog)

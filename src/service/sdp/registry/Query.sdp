@@ -1,0 +1,9 @@
+module mfw
+{
+    interface Query
+    {
+    	int getEndpoints(string sObj, string sDivision, out vector<string> vActiveEps, out vector<string> vInactiveEps);
+		int addEndpoint(string sObj, string sDivision, string ep);
+		int removeEndpoint(string sObj, string sDivision, string ep);
+    };
+};
