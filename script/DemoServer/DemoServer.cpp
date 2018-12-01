@@ -3,17 +3,18 @@
 #include "DemoServerConfig.h"
 using namespace std;
 
-DemoServer g_app;
+mfw::Application* mfw::g_app = new DemoServer;
 
-void DemoServer::initialize()
+bool DemoServer::initialize()
 {
     int32_t ret = loadDemoServerConfig();
     if (ret != 0) {
         LOG_ERROR("loadDemoServerConfig:" << ret);
-        exit(-1);
+        return false;
     }
 
     addService<DemoServiceImp>(ServerConfig::Application + "." + ServerConfig::ServerName + ".DemoServiceObj");
+    return true;
 }
 
 void DemoServer::destroyApp()
@@ -22,5 +23,5 @@ void DemoServer::destroyApp()
 
 int main(int argc, char *argv[])
 {
-    return g_app.main(argc, argv);
+    return g_app->main(argc, argv);
 }

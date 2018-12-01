@@ -72,7 +72,7 @@ public:
         deque<RequestorPtr>	m_pool;
     };
 
-    static void fetchURL(const string &sURL, ResponseData &stResposeData, const RequestOption &stOption = RequestOption());
+    static void fetchURL(const string &sURL, ResponseData &stResponseData, const RequestOption &stOption = RequestOption());
 
     static string appendURLParam(const string &sURL, const map<string, string> &mParam);
     static void extractURLParam(const string &sURL, string &sLocation, map<string, string> &mParam);

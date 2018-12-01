@@ -225,6 +225,7 @@ public:
     void join();
     bool wait();
     bool timedwait(uint64_t ms);
+    void wakeup();
 
 protected:
     static void *threadEntry(void *arg);
@@ -287,6 +288,7 @@ public:
     void start();
     void terminate();
     void join();
+    void wakeup();
 
 protected:
     string m_sIdentifier;

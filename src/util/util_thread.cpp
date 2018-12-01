@@ -266,6 +266,7 @@ bool CThread::wait()
     }
     return m_notifier.wait();
 }
+
 bool CThread::timedwait(uint64_t ms)
 {
     CLockGuard<CNotifier> lock(m_notifier);
@@ -273,6 +274,12 @@ bool CThread::timedwait(uint64_t ms)
         return false;
     }
     return m_notifier.timedwait(ms);
+}
+
+void CThread::wakeup()
+{
+    CLockGuard<CNotifier> lock(m_notifier);
+    m_notifier.signal();
 }
 
 void *CThread::threadEntry(void *arg)
@@ -338,6 +345,13 @@ void CThreadPool::join()
 {
     for (unsigned i = 0; i < m_vThread.size(); ++i) {
         m_vThread[i]->join();
+    }
+}
+
+void CThreadPool::wakeup()
+{
+    for (unsigned i = 0; i < m_vThread.size(); ++i) {
+        m_vThread[i]->wakeup();
     }
 }
 
