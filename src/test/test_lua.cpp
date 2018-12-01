@@ -1,7 +1,9 @@
 #include "luamod/LuaModule.h"
 #include "util/util_log.h"
+#include <iostream>
 
 using namespace mfw;
+using namespace std;
 
 int main(int argc, char* argv[]) {
 

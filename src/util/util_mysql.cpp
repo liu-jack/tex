@@ -151,7 +151,7 @@ void CMysql::connect()
 		}
 	}
 
-	char value = 0;
+	char value = 1;
 	mysql_options(m_mysql, MYSQL_OPT_RECONNECT, &value);
 
     if (mysql_real_connect(m_mysql, m_dbconf.sHost.c_str(), m_dbconf.sUser.c_str(), m_dbconf.sPassword.c_str(), m_dbconf.sDatabase.c_str(), m_dbconf.iPort, NULL, CLIENT_MULTI_STATEMENTS) == NULL)

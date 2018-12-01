@@ -32,7 +32,16 @@ int Websocket::handshake(const char *pInBegin, const char *pInEnd, const char *&
 
     string sHeader = sIn.substr(0, demPos);
     map<string, string> mOption;
-    UtilString::splitString2(sHeader, "\r\n", ": ", mOption);
+    // 不能直接使用splitSting2，因为head的value中包含了:和空格
+    vector<string> vParam =  UtilString::splitString(sHeader, "\r\n");
+    for (uint32_t i = 0; i < vParam.size(); ++i) {
+        string::size_type p = vParam[i].find_first_of(":");
+        if (p != string::npos) {
+            string sHeadKey = vParam[i].substr(0, p);
+            string sHeadValue = vParam[i].substr(p+2);
+            mOption[sHeadKey] = sHeadValue;
+        }
+    }
 
     string sKey;
     if (mOption.find("Sec-WebSocket-Key") == mOption.end()) {

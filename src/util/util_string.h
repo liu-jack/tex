@@ -67,11 +67,11 @@ public:
 		return strto<T>(s);
 	}
 
-	static void splitString(const string &str, const string &sep, bool bNotEmpty, vector<string> &vResult);
-	static vector<string> splitString(const string &str, const string &sep, bool bNotEmpty = true);
+	static void splitString(const string &str, const string &sep, bool bStrip, vector<string> &vResult);
+	static vector<string> splitString(const string &str, const string &sep, bool bStrip = true);
 
 	template <typename T> static void splitString(const string &str, const string &sep, bool bStrip, vector<T> &vResult);
-	template <typename T> static vector<T> splitString(const string &str, const string &sep, bool bNotEmpty = true);
+	template <typename T> static vector<T> splitString(const string &str, const string &sep, bool bStrip = true);
 
 	static string joinString(const vector<string> &v, const string &sep);
 	template <typename T> static string joinString(const vector<T> &v, const string &sep);

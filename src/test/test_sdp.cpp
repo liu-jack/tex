@@ -4,6 +4,7 @@
 #include <sstream>
 #include <assert.h>
 #include <stdint.h>
+#include "util/util_string.h"
 
 using namespace mfw;
 using namespace std;

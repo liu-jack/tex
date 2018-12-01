@@ -7,13 +7,8 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <stack>
 #include <sstream>
 #include <stdexcept>
-#include "util/util_string.h"
-#include "util/util_json.h"
-#include <cassert>
-#include <iostream>
 using namespace std;
 
 namespace mfw
@@ -23,16 +18,13 @@ enum SdpPackDataType
 {
 	SdpPackDataType_Integer_Positive = 0,
 	SdpPackDataType_Integer_Negative = 1,
-	SdpPackDataType_Integer64_Positive = 2,
-	SdpPackDataType_Integer64_Negative = 3,
-	SdpPackDataType_Float = 4,
-	SdpPackDataType_Double = 5,
-	SdpPackDataType_String = 6,
-	SdpPackDataType_Vector = 7,
-	SdpPackDataType_Map = 8,
-	SdpPackDataType_StructBegin = 9,
-	SdpPackDataType_StructEnd = 10,
-    SdpPackDataType_Bytes = 11,
+	SdpPackDataType_Float = 2,
+	SdpPackDataType_Double = 3,
+	SdpPackDataType_String = 4,
+	SdpPackDataType_Vector = 5,
+	SdpPackDataType_Map = 6,
+	SdpPackDataType_StructBegin = 7,
+	SdpPackDataType_StructEnd = 8,
 };
 
 template <typename Under>
@@ -140,7 +132,7 @@ public:
 	{
 		if (val < 0)
 		{
-			packHeader(tag, SdpPackDataType_Integer64_Negative);
+			packHeader(tag, SdpPackDataType_Integer_Negative);
 			packNumber((uint64_t)-val);
 		}
 		else
@@ -150,7 +142,7 @@ public:
 	}
 	void pack(uint32_t tag, uint64_t val)
 	{
-		packHeader(tag, SdpPackDataType_Integer64_Positive);
+		packHeader(tag, SdpPackDataType_Integer_Positive);
 		packNumber(val);
 	}
 	void pack(uint32_t tag, bool /*require*/, float val)
@@ -163,7 +155,7 @@ public:
 	void pack(uint32_t tag, bool /*require*/, double val)
 	{
 		packHeader(tag, SdpPackDataType_Double);
-		union { double d; uint64_t i;};
+		union { double d; uint64_t i; };
 		d = val;
 		packNumber(i);
 	}
@@ -177,7 +169,7 @@ public:
 	template <typename Alloc>
 	void pack(uint32_t tag, bool /*require*/, const vector<char, Alloc> &val)
 	{
-		packHeader(tag, SdpPackDataType_Bytes);
+		packHeader(tag, SdpPackDataType_String);
 		packNumber(val.size());
 		packData(&val[0], val.size());
 	}
@@ -471,13 +463,13 @@ public:
 		{
 			SdpPackDataType type;
 			unpackHeader(tag, type);
-			if (type == SdpPackDataType_Integer64_Negative)
+			if (type == SdpPackDataType_Integer_Negative)
 			{
 				uint64_t v = val;
 				unpackNumber(v);
 				val = static_cast<uint64_t>(-v);
 			}
-			else if (type == SdpPackDataType_Integer64_Positive)
+			else if (type == SdpPackDataType_Integer_Positive)
 			{
 				unpackNumber(val);
 			}
@@ -502,6 +494,13 @@ public:
 				unpackNumber(v);
 				val = f;
 			}
+			else if (type == SdpPackDataType_Double)
+			{
+				union { double d; uint64_t v; };
+				d = val;
+				unpackNumber(v);
+				val = static_cast<float>(d);
+			}
 			else
 			{
 				throwIncompatiableType(type);
@@ -516,11 +515,18 @@ public:
 		{
 			SdpPackDataType type;
 			unpackHeader(tag, type);
-			if (type == SdpPackDataType_Double)
+			if (type == SdpPackDataType_Float)
 			{
-				union { double d; uint64_t i; };
+				union { float f; uint32_t v; };
+				f = static_cast<float>(val);
+				unpackNumber(v);
+				val = f;
+			}
+			else if (type == SdpPackDataType_Double)
+			{
+				union { double d; uint64_t v; };
 				d = val;
-				unpackNumber(i);
+				unpackNumber(v);
 				val = d;
 			}
 			else
@@ -559,7 +565,7 @@ public:
 		{
 			SdpPackDataType type;
 			unpackHeader(tag, type);
-			if (type == SdpPackDataType_Bytes)
+			if (type == SdpPackDataType_String)
 			{
 				uint32_t size;
 				unpackNumber(size);
@@ -847,20 +853,12 @@ public:
 		case SdpPackDataType_Integer_Positive:
 		case SdpPackDataType_Integer_Negative:
 		case SdpPackDataType_Float:
-			{
-				uint32_t val;
-				unpackNumber(val);
-			}
-			break;
-		case SdpPackDataType_Integer64_Positive:
-		case SdpPackDataType_Integer64_Negative:
 		case SdpPackDataType_Double:
 			{
 				uint64_t val;
 				unpackNumber(val);
 			}
 			break;
-        case SdpPackDataType_Bytes:
 		case SdpPackDataType_String:
 			{
 				uint32_t size;
@@ -940,9 +938,8 @@ public:
 
 	// redirection
 	template <typename T>
-	void visit(uint32_t /*tag*/, bool /*require*/, const char *name, const T &val, bool unused=false)
+	void visit(uint32_t /*tag*/, bool /*require*/, const char *name, const T &val)
 	{
-        (void)unused;
 		display(name, val);
 	}
 
@@ -1174,211 +1171,6 @@ private:
 	uint32_t	m_tab;
 };
 
-class SdpJsonDisplayer
-{
-public:
-	explicit SdpJsonDisplayer(Json::Value &stJson, bool bWithOpt = true) : m_bWithOpt(bWithOpt) {
-        m_stack.push(&stJson);
-    }
-
-	// redirection
-	template <typename T>
-	void visit(uint32_t /*tag*/, bool /*require*/, const char *name, const T &val)
-	{
-		display(name, val);
-	}
-
-	// display interface
-	template <typename T>
-	void display(const T &val)
-	{
-		display(NULL, val);
-	}
-
-	void display(const char *name, bool val)
-	{
-        if (name != NULL) {
-	        top()[name] = val;
-        } else {
-            top() = val;
-        }
-	}
-
-	void display(const char *name, char val)
-	{
-        if (name != NULL) {
-	        top()[name] = (uint8_t)val;
-        } else {
-            top() = (uint8_t)val;
-        }
-	}
-	void display(const char *name, int8_t val)
-	{
-        if (name != NULL) {
-	        top()[name] = val;
-        } else {
-            top() = val;
-        }
-	}
-	void display(const char *name, uint8_t val)
-	{
-        if (name != NULL) {
-	        top()[name] = val;
-        } else {
-            top() = val;
-        }
-	}
-	void display(const char *name, int16_t val)
-	{
-        if (name != NULL) {
-	        top()[name] = val;
-        } else {
-            top() = val;
-        }
-	}
-	void display(const char *name, uint16_t val)
-	{
-        if (name != NULL) {
-	        top()[name] = val;
-        } else {
-            top() = val;
-        }
-	}
-
-	void display(const char *name, int32_t val)
-	{
-        if (name != NULL) {
-	        top()[name] = val;
-        } else {
-            top() = val;
-        }
-	}
-	void display(const char *name, uint32_t val)
-	{
-        if (name != NULL) {
-	        top()[name] = val;
-        } else {
-            top() = val;
-        }
-	}
-	void display(const char *name, int64_t val)
-	{
-        if (name != NULL) {
-	        top()[name] = (double)val;
-        } else {
-            top() = (double)val;
-        }
-	}
-	void display(const char *name, uint64_t val)
-	{
-        if (name != NULL) {
-	        top()[name] = (double)val;
-        } else {
-            top() = (double)val;
-        }
-	}
-	void display(const char *name, float val)
-	{
-        if (name != NULL) {
-	        top()[name] = val;
-        } else {
-            top() = val;
-        }
-	}
-	void display(const char *name, double val)
-	{
-        if (name != NULL) {
-	        top()[name] = val;
-        } else {
-            top() = val;
-        }
-	}
-	void display(const char *name, const string &val)
-	{
-        if (name != NULL) {
-	        top()[name] = val;
-        } else {
-            top() = val;
-        }
-	}
-	template <typename Alloc>
-	void display(const char *name, const vector<char, Alloc> &val)
-	{
-        if (name != NULL) {
-	        top()[name] = string(&val[0], val.size());
-        } else {
-            top() = string(&val[0], val.size());
-        }
-	}
-
-	template <typename T, typename Alloc>
-	void display(const char *name, const vector<T, Alloc> &val)
-	{
-		pf(name, true);
-		if (!val.empty())
-		{
-			for (uint32_t i = 0; i < val.size(); ++i)
-			{
-                Json::Value stItem;
-                m_stack.push(&stItem);
-				display(val[i]);
-                m_stack.pop();
-                top().append(stItem);
-			}
-		}
-        pf(NULL);
-	}
-
-	template <typename Key, typename Value, typename Compare, typename Alloc>
-	void display(const char *name, const map<Key, Value, Compare, Alloc> &val)
-	{
-		pf(name);
-		if (!val.empty())
-		{
-			for (typename map<Key, Value, Compare, Alloc>::const_iterator first = val.begin(), last = val.end(); first != last; ++first)
-			{
-				display(UtilString::tostr(first->first).c_str(), first->second);
-			}
-		}
-        pf(NULL);
-	}
-
-	template <typename T>
-	void display(const char *name, const T &val)
-	{
-        if (name != NULL) pf(name);
-
-		val.visit(*this, m_bWithOpt);
-
-		if (name != NULL) pf(NULL);
-	}
-private:
-	void pf(const char *name, bool bArray=false)
-	{
-        if (name != NULL) {
-            assert (m_stack.size() >= 1);
-            Json::Value *pParent = m_stack.top();
-            if (!bArray) {
-                (*pParent)[name] = Json::Value();
-            } else {
-                Json::Value stArray(Json::arrayValue);
-                (*pParent)[name] = stArray;
-            }
-            m_stack.push(&((*pParent)[name]));
-        } else {
-            m_stack.pop();
-        }
-	}
-    Json::Value &top() {
-        assert (m_stack.size() >= 1);
-        return *(m_stack.top());
-    }
-
-private:
-    stack<Json::Value* > m_stack;
-	bool		m_bWithOpt;
-};
-
 template <typename T>
 string sdpToString(const T &t)
 {
@@ -1401,18 +1193,6 @@ string printSdp(const T &t)
 	SdpDisplayer displayer(os);
 	displayer.display(t);
 	return os.str();
-}
-
-template <typename T>
-string sdpToJson(const T &t, bool styled=false)
-{
-    Json::Value stValue;
-	SdpJsonDisplayer displayer(stValue);
-	displayer.display(t);
-    if (styled) {
-        return UtilJson::jsonToStringStyled(stValue);
-    }
-	return UtilJson::jsonToString(stValue);
 }
 
 namespace assign

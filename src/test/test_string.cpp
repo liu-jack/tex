@@ -2,6 +2,7 @@
 #include "util/util_stl.h"
 #include <iostream>
 #include <iterator>
+#include <assert.h>
 
 using namespace mfw;
 
@@ -24,20 +25,27 @@ int main(int argc, char* argv[])
 
     cout << endl;
 
-    string s2 = "GET / HTTP/1.1\r\nOrigin: https://192.168.0.16:0\r\nSec-WebSocket-Key: QQxmh3rcAub8VRrc8IpXpQ==\r\nConnection: Upgrade\r\nUpgrade: websocket\r\nSec-WebSocket-Version: 13\r\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko\r\nHost: 192.168.0.16:15100\r\nCache-Control: no-cache\r\nCookie: theworld_client_none=\263\261\224\257";
+    string s2 = "GET / HTTP/1.1\r\nOrigin: https://192.168.0.16:0\r\nSec-WebSocket-Key: QQxmh3rcAub8VRrc8IpXpQ==\r\nConnection: Upgrade\r\nUpgrade: websocket\r\nSec-WebSocket-Version: 13\r\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko\r\nHost: 192.168.0.16:15100\r\nCache-Control: no-cache\r\nCookie: theworld_client_none=";
     
     mParam.clear();
-    UtilString::splitString2(s2, "\r\n", ": ", mParam);
-
-    cout << UtilString::joinURLParam(mParam, "&", "=") << endl;
+    vector<string> vParam =  UtilString::splitString(s2, "\r\n");
+    for (uint32_t i = 0; i < vParam.size(); ++i) {
+        string::size_type p = vParam[i].find_first_of(":");
+        if (p == string::npos) {
+            cout << vParam[i] << endl;
+        } else {
+            string sHeadKey = vParam[i].substr(0, p);
+            string sHeadValue = vParam[i].substr(p+2);
+            cout << sHeadKey << "=" << sHeadValue << endl;
+        }
+    }
 
     string s3 = "1::2:";
     vector<string> v3 = UtilString::splitString(s3, ":");
-    std::copy(v3.begin(), v3.end(), std::ostream_iterator<string>(cout, "|"));
-    cout << endl;
+    assert (v3.size() == 2);
+    cout << UtilString::joinString(v3, "|") << endl;
     vector<string> v4 = UtilString::splitString(s3, ":", false);
-    std::copy(v4.begin(), v4.end(), std::ostream_iterator<string>(cout, "|"));
-    cout << endl;
+    cout << UtilString::joinString(v4, "|") << endl;
 
 	return 0;
 }

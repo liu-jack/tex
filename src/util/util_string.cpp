@@ -3,7 +3,6 @@
 #include <cstring>
 #include <cstdarg>
 #include <stdexcept>
-#include <algorithm>
 #ifndef BUILD_ON_MINGW
 #include <iconv.h>
 #endif
@@ -166,27 +165,40 @@ string UtilString::format(const char *fmt, ...)
 	return res;
 }
 
-void UtilString::splitString(const string &str, const string &sep, bool bNotEmpty, vector<string> &vResult)
+void UtilString::splitString(const string &str, const string &sep, bool bStrip, vector<string> &vResult)
 {
-    std::string::const_iterator p = str.begin(), q;
-    
-    while (true) {
-        q = std::search(p, str.end(), sep.begin(), sep.end());
-        std::string tmp(p, q);
-        if (!bNotEmpty || !tmp.empty()) {
-            vResult.push_back(tmp);
-        }
-        if (q == str.end()) {
-            break;
-        }
-        p = q + sep.size();
-    }
+	string::size_type p = 0, q = 0;
+	while (true)
+	{
+		q = str.find_first_of(sep, p);
+		if (q == string::npos)
+		{
+			if (!bStrip || p < str.size())
+			{
+				vResult.push_back(str.substr(p));
+			}
+			break;
+		}
+		if (q == p)
+		{
+			if (!bStrip)
+			{
+				vResult.push_back("");
+			}
+		}
+		else
+		{
+			vResult.push_back(str.substr(p, q - p));
+			p = q;
+		}
+		++p;
+	}
 }
 
-vector<string> UtilString::splitString(const string &str, const string &sep, bool bNotEmpty)
+vector<string> UtilString::splitString(const string &str, const string &sep, bool bStrip)
 {
 	vector<string> vResult;
-	splitString(str, sep, bNotEmpty, vResult);
+	splitString(str, sep, bStrip, vResult);
 	return vResult;
 }
 
