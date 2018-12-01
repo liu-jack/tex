@@ -12,8 +12,8 @@ class RegistryQueryCallback : public QueryPrxCallback
 public:
     RegistryQueryCallback(Connector *pConnector, bool bIsInThread);
 
-	virtual void callback_getEndpoints(int32_t ret, const vector<string> &vActiveEps,  const vector<string> &vInactiveEps);
-	virtual void callback_getEndpoints_exception(int32_t ret);
+    virtual void callback_getEndpoints(int32_t ret, const vector<string> &vActiveEps,  const vector<string> &vInactiveEps);
+    virtual void callback_getEndpoints_exception(int32_t ret);
 
 protected:
     void init(const string &sObjectName);
@@ -31,12 +31,12 @@ protected:
     bool m_bIsInThread;
 
     string m_sObjectName;
-	string m_sDivision;
+    string m_sDivision;
     bool m_bExplicitEndpoint;
     string m_sLocator;
-	QueryPrx m_queryPrx;
+    QueryPrx m_queryPrx;
 
-	bool m_bValid;
+    bool m_bValid;
     set<CEndpoint> m_setActiveEndpoints;
     set<CEndpoint> m_setInactiveEndpoints;
 
@@ -61,7 +61,10 @@ public:
     virtual ~EndpointManager();
 
     bool selectAdapterProxy(ReqMessage *msg, AdapterProxy *&pAdapterProxy);
-    const map<string, AdapterProxy *> &getAllAdapters() const { return m_mAllAdapterProxy; }
+    const map<string, AdapterProxy *> &getAllAdapters() const
+    {
+        return m_mAllAdapterProxy;
+    }
 
 protected:
     void notifyEndpoints(const set<CEndpoint> &setActiveEndpoints, const set<CEndpoint> &setInactiveEndpoints);

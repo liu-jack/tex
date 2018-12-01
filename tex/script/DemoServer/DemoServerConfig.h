@@ -5,8 +5,7 @@
 #include <string>
 using namespace std;
 
-struct DemoServerConfig
-{
+struct DemoServerConfig {
 
 };
 

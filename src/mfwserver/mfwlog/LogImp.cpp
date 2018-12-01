@@ -3,12 +3,9 @@
 
 int32_t LogImp::logRemote(const mfw::LogBaseInfo &info, const map<string, vector<mfw::LogDataItem> > &mFileData)
 {
-	try
-	{
-		addToAsyncLogger(info, mFileData, getCurrent()->getIp());
-	}
-	catch (...)
-	{
-	}
-	return 0;
+    try {
+        addToAsyncLogger(info, mFileData, getCurrent()->getIp());
+    } catch (...) {
+    }
+    return 0;
 }

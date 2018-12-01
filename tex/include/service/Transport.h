@@ -15,8 +15,7 @@ class AdapterProxy;
 class Transport
 {
 public:
-    enum ConnectStatus
-    {
+    enum ConnectStatus {
         eUnconnected,
         eConnecting,
         eConnected,
@@ -25,12 +24,27 @@ public:
     explicit Transport(AdapterProxy *pAdapterProxy);
     virtual ~Transport();
 
-    bool isValid() const { return m_sock.isValid(); }
-    CSocket &getSocket() { return m_sock; }
-    AdapterProxy *getAdapterProxy() { return m_pAdapterProxy; }
+    bool isValid() const
+    {
+        return m_sock.isValid();
+    }
+    CSocket &getSocket()
+    {
+        return m_sock;
+    }
+    AdapterProxy *getAdapterProxy()
+    {
+        return m_pAdapterProxy;
+    }
 
-	bool isConnecting() { return isValid() && (m_connStatus == eConnecting); }
-	bool isConnected() { return isValid() && (m_connStatus == eConnected); }
+    bool isConnecting()
+    {
+        return isValid() && (m_connStatus == eConnecting);
+    }
+    bool isConnected()
+    {
+        return isValid() && (m_connStatus == eConnected);
+    }
     void setConnected();
 
     void checkTimeout();
@@ -39,9 +53,9 @@ public:
     void close();
 
 public:
-	virtual int doRequest();
-	virtual int doResponse(list<ResponsePacket> &done) = 0;
-	bool trySendRequest(const char *buf, uint32_t len);
+    virtual int doRequest();
+    virtual int doResponse(list<ResponsePacket> &done) = 0;
+    bool trySendRequest(const char *buf, uint32_t len);
 
     virtual int send(const void *buf, uint32_t len) = 0;
     virtual int recv(void *buf, uint32_t len) = 0;
@@ -60,21 +74,21 @@ protected:
 class TcpTransport : public Transport
 {
 public:
-	explicit TcpTransport(AdapterProxy *pAdapterProxy) : Transport(pAdapterProxy) {}
+    explicit TcpTransport(AdapterProxy *pAdapterProxy) : Transport(pAdapterProxy) {}
 
     virtual int send(const void *buf, uint32_t len);
     virtual int recv(void *buf, uint32_t len);
-	virtual int doResponse(list<ResponsePacket> &done);
+    virtual int doResponse(list<ResponsePacket> &done);
 };
 
 class UdpTransport : public Transport
 {
 public:
-	explicit UdpTransport(AdapterProxy *pAdapterProxy) : Transport(pAdapterProxy) {}
+    explicit UdpTransport(AdapterProxy *pAdapterProxy) : Transport(pAdapterProxy) {}
 
     virtual int send(const void *buf, uint32_t len);
     virtual int recv(void *buf, uint32_t len);
-	virtual int doResponse(list<ResponsePacket> &done);
+    virtual int doResponse(list<ResponsePacket> &done);
 };
 
 }

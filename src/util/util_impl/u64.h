@@ -45,10 +45,14 @@ typedef uint64_t u64;
    u64init (HI, LO), is like u64hilo (HI, LO), but for use in
    initializer contexts.  */
 # ifdef WORDS_BIGENDIAN
-typedef struct { uint32_t hi, lo; } u64;
+typedef struct {
+    uint32_t hi, lo;
+} u64;
 #  define u64init(hi, lo) { hi, lo }
 # else
-typedef struct { uint32_t lo, hi; } u64;
+typedef struct {
+    uint32_t lo, hi;
+} u64;
 #  define u64init(hi, lo) { lo, hi }
 # endif
 
@@ -57,103 +61,97 @@ typedef struct { uint32_t lo, hi; } u64;
 static inline u64
 u64hilo (uint32_t hi, uint32_t lo)
 {
-  u64 r;
-  r.hi = hi;
-  r.lo = lo;
-  return r;
+    u64 r;
+    r.hi = hi;
+    r.lo = lo;
+    return r;
 }
 
 /* Return a u64 value representing LO.  */
 static inline u64
 u64lo (uint32_t lo)
 {
-  u64 r;
-  r.hi = 0;
-  r.lo = lo;
-  return r;
+    u64 r;
+    r.hi = 0;
+    r.lo = lo;
+    return r;
 }
 
 /* Return X < Y.  */
 static inline int
 u64lt (u64 x, u64 y)
 {
-  return x.hi < y.hi || (x.hi == y.hi && x.lo < y.lo);
+    return x.hi < y.hi || (x.hi == y.hi && x.lo < y.lo);
 }
 
 /* Return X & Y.  */
 static inline u64
 u64and (u64 x, u64 y)
 {
-  u64 r;
-  r.hi = x.hi & y.hi;
-  r.lo = x.lo & y.lo;
-  return r;
+    u64 r;
+    r.hi = x.hi & y.hi;
+    r.lo = x.lo & y.lo;
+    return r;
 }
 
 /* Return X | Y.  */
 static inline u64
 u64or (u64 x, u64 y)
 {
-  u64 r;
-  r.hi = x.hi | y.hi;
-  r.lo = x.lo | y.lo;
-  return r;
+    u64 r;
+    r.hi = x.hi | y.hi;
+    r.lo = x.lo | y.lo;
+    return r;
 }
 
 /* Return X ^ Y.  */
 static inline u64
 u64xor (u64 x, u64 y)
 {
-  u64 r;
-  r.hi = x.hi ^ y.hi;
-  r.lo = x.lo ^ y.lo;
-  return r;
+    u64 r;
+    r.hi = x.hi ^ y.hi;
+    r.lo = x.lo ^ y.lo;
+    return r;
 }
 
 /* Return X + Y.  */
 static inline u64
 u64plus (u64 x, u64 y)
 {
-  u64 r;
-  r.lo = x.lo + y.lo;
-  r.hi = x.hi + y.hi + (r.lo < x.lo);
-  return r;
+    u64 r;
+    r.lo = x.lo + y.lo;
+    r.hi = x.hi + y.hi + (r.lo < x.lo);
+    return r;
 }
 
 /* Return X << N.  */
 static inline u64
 u64shl (u64 x, int n)
 {
-  u64 r;
-  if (n < 32)
-    {
-      r.hi = (x.hi << n) | (x.lo >> (32 - n));
-      r.lo = x.lo << n;
+    u64 r;
+    if (n < 32) {
+        r.hi = (x.hi << n) | (x.lo >> (32 - n));
+        r.lo = x.lo << n;
+    } else {
+        r.hi = x.lo << (n - 32);
+        r.lo = 0;
     }
-  else
-    {
-      r.hi = x.lo << (n - 32);
-      r.lo = 0;
-    }
-  return r;
+    return r;
 }
 
 /* Return X >> N.  */
 static inline u64
 u64shr (u64 x, int n)
 {
-  u64 r;
-  if (n < 32)
-    {
-      r.hi = x.hi >> n;
-      r.lo = (x.hi << (32 - n)) | (x.lo >> n);
+    u64 r;
+    if (n < 32) {
+        r.hi = x.hi >> n;
+        r.lo = (x.hi << (32 - n)) | (x.lo >> n);
+    } else {
+        r.hi = 0;
+        r.lo = x.hi >> (n - 32);
     }
-  else
-    {
-      r.hi = 0;
-      r.lo = x.hi >> (n - 32);
-    }
-  return r;
+    return r;
 }
 
 #endif

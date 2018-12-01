@@ -6,7 +6,7 @@
 class DemoServiceImp : public DemoApp::DemoService
 {
 public:
-	virtual void initialize();
+    virtual void initialize();
     virtual void destroy();
 };
 #endif

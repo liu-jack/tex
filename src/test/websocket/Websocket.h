@@ -7,8 +7,8 @@ using namespace mfw;
 class Websocket : public Application
 {
 public:
-	virtual bool initialize();
-	virtual void destroyApp();
+    virtual bool initialize();
+    virtual void destroyApp();
 };
 
 #endif

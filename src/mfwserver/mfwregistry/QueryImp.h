@@ -14,8 +14,8 @@ public:
     virtual void destroy() {}
 
     virtual int32_t getEndpoints(const string &sObj, const string &sDivision, vector<string> &vActiveEps, vector<string> &vInactiveEps);
-	virtual int32_t addEndpoint(const string &sObj, const string &sDivision, const string &sEp);
-	virtual int32_t removeEndpoint(const string &sObj, const string &sDivision, const string &sEp);
+    virtual int32_t addEndpoint(const string &sObj, const string &sDivision, const string &sEp);
+    virtual int32_t removeEndpoint(const string &sObj, const string &sDivision, const string &sEp);
 };
 
 #endif

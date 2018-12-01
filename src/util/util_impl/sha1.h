@@ -33,17 +33,16 @@ extern "C" {
 #define SHA1_DIGEST_SIZE 20
 
 /* Structure to save state of computation between the single steps.  */
-struct sha1_ctx
-{
-  uint32_t A;
-  uint32_t B;
-  uint32_t C;
-  uint32_t D;
-  uint32_t E;
+struct sha1_ctx {
+    uint32_t A;
+    uint32_t B;
+    uint32_t C;
+    uint32_t D;
+    uint32_t E;
 
-  uint32_t total[2];
-  uint32_t buflen;
-  uint32_t buffer[32];
+    uint32_t total[2];
+    uint32_t buflen;
+    uint32_t buffer[32];
 };
 
 
@@ -55,14 +54,14 @@ extern void sha1_init_ctx (struct sha1_ctx *ctx);
    starting at BUFFER.
    It is necessary that LEN is a multiple of 64!!! */
 extern void sha1_process_block (const void *buffer, size_t len,
-				struct sha1_ctx *ctx);
+                                struct sha1_ctx *ctx);
 
 /* Starting with the result of former calls of this function (or the
    initialization function update the context for the next LEN bytes
    starting at BUFFER.
    It is NOT required that LEN is a multiple of 64.  */
 extern void sha1_process_bytes (const void *buffer, size_t len,
-				struct sha1_ctx *ctx);
+                                struct sha1_ctx *ctx);
 
 /* Process the remaining bytes in the buffer and put result from CTX
    in first 20 bytes following RESBUF.  The result is always in little

@@ -5,9 +5,8 @@
 #include "util/util_queue.h"
 using namespace mfw;
 
-struct LogServerConfig
-{
-	string	sLogPath;
+struct LogServerConfig {
+    string	sLogPath;
 };
 extern LogServerConfig g_stLogServerConfig;
 

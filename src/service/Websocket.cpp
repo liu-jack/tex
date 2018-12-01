@@ -8,9 +8,11 @@
 
 #define WEBSOCKET_MAGIC_KEY "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
 
-namespace mfw {
+namespace mfw
+{
 
-int Websocket::handshake(const char *pInBegin, const char *pInEnd, const char *&pNextIn, string &sOut) {
+int Websocket::handshake(const char *pInBegin, const char *pInEnd, const char *&pNextIn, string &sOut)
+{
     if ((pInEnd - pInBegin) < 3) {
         return NetServer::PACKET_LESS;
     }
@@ -25,8 +27,7 @@ int Websocket::handshake(const char *pInBegin, const char *pInEnd, const char *&
     }
 
     string::size_type demPos = sIn.find("\r\n\r\n");
-    if (demPos == string::npos)
-    {
+    if (demPos == string::npos) {
         return NetServer::PACKET_LESS;
     }
 
@@ -82,7 +83,8 @@ int Websocket::handshake(const char *pInBegin, const char *pInEnd, const char *&
     return NetServer::PACKET_FULL;
 }
 
-int Websocket::parseProtocol(const char *pInBegin, const char *pInEnd, const char *&pNextIn, string &sOut) {
+int Websocket::parseProtocol(const char *pInBegin, const char *pInEnd, const char *&pNextIn, string &sOut)
+{
     /*
         0                   1                   2                   3
         0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -110,7 +112,7 @@ int Websocket::parseProtocol(const char *pInBegin, const char *pInEnd, const cha
 
     ByteBuffer bb;
     bb.resize(len);
-	memcpy((char*)bb.contents(), pInBegin, len);
+    memcpy((char*)bb.contents(), pInBegin, len);
 
     try {
         // 操作码
@@ -121,10 +123,10 @@ int Websocket::parseProtocol(const char *pInBegin, const char *pInEnd, const cha
 
         uint8_t opcode = b1 & 0x0F;
         if (opcode != 0x0  // denotes a continuation frame
-        && opcode != 0x1   // denotes a text frame
-        && opcode != 0x2   // denotes a binary frame
-        && opcode != 0x8   // denotes a connection close
-        ) {
+                && opcode != 0x1   // denotes a text frame
+                && opcode != 0x2   // denotes a binary frame
+                && opcode != 0x8   // denotes a connection close
+           ) {
             MFW_ERROR("websocket unsupport opcode=" << (uint32_t)opcode);
             return -1;
         }
@@ -204,15 +206,16 @@ int Websocket::parseProtocol(const char *pInBegin, const char *pInEnd, const cha
         pNextIn = pInBegin + (len-bb.left());
 
         return NetServer::PACKET_FULL;
-	} catch(const ByteBufferException &ex) {
-		bb.hexlike();
+    } catch(const ByteBufferException &ex) {
+        bb.hexlike();
         return -1;
-	}
+    }
 
     return -1;
 }
 
-string Websocket::encodeProtocol(const string &sBuffer) {
+string Websocket::encodeProtocol(const string &sBuffer)
+{
     ByteBuffer bb;
 
     // 只支持BINARY_FRAME

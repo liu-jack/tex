@@ -62,16 +62,15 @@ extern "C" {
 # endif
 
 /* Structure to save state of computation between the single steps.  */
-struct md5_ctx
-{
-  uint32_t A;
-  uint32_t B;
-  uint32_t C;
-  uint32_t D;
+struct md5_ctx {
+    uint32_t A;
+    uint32_t B;
+    uint32_t C;
+    uint32_t D;
 
-  uint32_t total[2];
-  uint32_t buflen;
-  uint32_t buffer[32];
+    uint32_t total[2];
+    uint32_t buflen;
+    uint32_t buffer[32];
 };
 
 /*
@@ -88,14 +87,14 @@ extern void __md5_init_ctx (struct md5_ctx *ctx) __THROW;
    starting at BUFFER.
    It is necessary that LEN is a multiple of 64!!! */
 extern void __md5_process_block (const void *buffer, size_t len,
-				 struct md5_ctx *ctx) __THROW;
+                                 struct md5_ctx *ctx) __THROW;
 
 /* Starting with the result of former calls of this function (or the
    initialization function update the context for the next LEN bytes
    starting at BUFFER.
    It is NOT required that LEN is a multiple of 64.  */
 extern void __md5_process_bytes (const void *buffer, size_t len,
-				 struct md5_ctx *ctx) __THROW;
+                                 struct md5_ctx *ctx) __THROW;
 
 /* Process the remaining bytes in the buffer and put result from CTX
    in first 16 bytes following RESBUF.  The result is always in little
@@ -120,7 +119,7 @@ extern int __md5_stream (FILE *stream, void *resblock) __THROW;
    output yields to the wanted ASCII representation of the message
    digest.  */
 extern void *__md5_buffer (const char *buffer, size_t len,
-			   void *resblock) __THROW;
+                           void *resblock) __THROW;
 
 # ifdef __cplusplus
 }

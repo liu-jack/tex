@@ -12,7 +12,7 @@ namespace mfw
 
 ServiceProxyThreadData * ServiceProxyThreadData::getData()
 {
-	return ThreadSingleton<ServiceProxyThreadData>::get();
+    return ThreadSingleton<ServiceProxyThreadData>::get();
 }
 
 ServiceProxyCallback::ServiceProxyCallback()
@@ -21,48 +21,47 @@ ServiceProxyCallback::ServiceProxyCallback()
 }
 
 ServiceProxy::ServiceProxy(ObjectProxy *pObjectProxy) :
-	m_pObjectProxy(pObjectProxy),
-	m_iSyncTimeout(SYNC_CALL_DEFAULT_TIMEOUT),
-	m_iAsyncTimeout(ASYNC_CALL_DEFAULT_TIMEOUT)
+    m_pObjectProxy(pObjectProxy),
+    m_iSyncTimeout(SYNC_CALL_DEFAULT_TIMEOUT),
+    m_iAsyncTimeout(ASYNC_CALL_DEFAULT_TIMEOUT)
 {
-	m_pObjectProxy->setServiceProxy(this);
+    m_pObjectProxy->setServiceProxy(this);
 }
 
 const string &ServiceProxy::mfw_name() const
 {
-	return m_pObjectProxy->getObjectName();
+    return m_pObjectProxy->getObjectName();
 }
 
 void ServiceProxy::mfw_sync_timeout(uint32_t ms)
 {
-	m_iSyncTimeout = std::max(ms, (uint32_t)SYNC_CALL_MIN_TIMEOUT);
+    m_iSyncTimeout = std::max(ms, (uint32_t)SYNC_CALL_MIN_TIMEOUT);
 }
 
 void ServiceProxy::mfw_async_timeout(uint32_t ms)
 {
-	m_iAsyncTimeout = std::max(ms, (uint32_t)ASYNC_CALL_MIN_TIMEOUT);
+    m_iAsyncTimeout = std::max(ms, (uint32_t)ASYNC_CALL_MIN_TIMEOUT);
 }
 
 void ServiceProxy::mfw_connect_timeout(uint32_t ms)
 {
-	ms = std::max(ms, (uint32_t)CONNECT_MIN_TIMEOUT);
-	ms = std::min(ms, (uint32_t)CONNECT_MAX_TIMEOUT);
+    ms = std::max(ms, (uint32_t)CONNECT_MIN_TIMEOUT);
+    ms = std::min(ms, (uint32_t)CONNECT_MAX_TIMEOUT);
     m_pObjectProxy->setConnectTimeout(ms);
 }
 
 void ServiceProxy::mfw_set_protocol(const ClientSideProtocol& protocol)
 {
-	CLockGuard<CMutex> lock(m_mutex);
+    CLockGuard<CMutex> lock(m_mutex);
     m_pObjectProxy->setClientSideProtocol(protocol);
 }
 
 vector<CEndpoint> ServiceProxy::mfw_get_endpoint()
 {
-	CLockGuard<CMutex> lock(m_mutex);
-	if (!m_pEndpointQuery)
-	{
-		m_pEndpointQuery = EndpointThreadPtr(new EndpointThread(m_pObjectProxy->getConnectorImp()->getConnector(), m_pObjectProxy->getFullObjectName()));
-	}
+    CLockGuard<CMutex> lock(m_mutex);
+    if (!m_pEndpointQuery) {
+        m_pEndpointQuery = EndpointThreadPtr(new EndpointThread(m_pObjectProxy->getConnectorImp()->getConnector(), m_pObjectProxy->getFullObjectName()));
+    }
 
     vector<CEndpoint> vActiveEndpoint;
     vector<CEndpoint> vInactiveEndpoint;
@@ -79,15 +78,15 @@ void ServiceProxy::mfw_hash(uint64_t iHashCode)
 
 void ServiceProxy::mfw_set_timeout(uint32_t ms)
 {
-	ServiceProxyThreadData *pSptd = ServiceProxyThreadData::getData();
+    ServiceProxyThreadData *pSptd = ServiceProxyThreadData::getData();
     pSptd->bSetTimeout = true;
     pSptd->iTimeoutMS = ms;
 }
 
 void ServiceProxy::mfw_set_context(const map<string, string> &context)
 {
-	ServiceProxyThreadData *pSptd = ServiceProxyThreadData::getData();
-	pSptd->mContext = context;
+    ServiceProxyThreadData *pSptd = ServiceProxyThreadData::getData();
+    pSptd->mContext = context;
 }
 
 void ServiceProxy::mfw_invoke(const string &sFuncName,const string &sReqPayload, ResponsePacket &rsp)
@@ -103,7 +102,7 @@ void ServiceProxy::mfw_invoke(const string &sFuncName,const string &sReqPayload,
 
     invoke(msg);
     swap(rsp, msg->response);
-	delete msg;
+    delete msg;
 }
 
 void ServiceProxy::mfw_invoke_async(const string &sFuncName, const string &sReqPayload, const ServiceProxyCallbackPtr &callback)
@@ -129,18 +128,15 @@ void ServiceProxy::rpc_call(uint32_t iRequestId, const string &sFuncName, const 
 
     msg->request.iRequestId = iRequestId;
     msg->request.sFuncName = sFuncName;
-    if (m_pObjectProxy->getClientSideProtocol().requestFunc != NULL)
-    {
-    	msg->request.sReqPayload = sReqPayload;
-    }
-    else
-    {
-    	msg->sReqData = sReqPayload;
+    if (m_pObjectProxy->getClientSideProtocol().requestFunc != NULL) {
+        msg->request.sReqPayload = sReqPayload;
+    } else {
+        msg->sReqData = sReqPayload;
     }
 
     invoke(msg);
-	swap(rsp, msg->response);
-	delete msg;
+    swap(rsp, msg->response);
+    delete msg;
 }
 
 void ServiceProxy::rpc_call_async(uint32_t iRequestId, const string &sFuncName, const string &sReqPayload, const ServiceProxyCallbackPtr &callback)
@@ -152,13 +148,10 @@ void ServiceProxy::rpc_call_async(uint32_t iRequestId, const string &sFuncName, 
 
     msg->request.iRequestId = iRequestId;
     msg->request.sFuncName = sFuncName;
-    if (m_pObjectProxy->getClientSideProtocol().requestFunc != NULL)
-    {
-    	msg->request.sReqPayload = sReqPayload;
-    }
-    else
-    {
-    	msg->sReqData = sReqPayload;
+    if (m_pObjectProxy->getClientSideProtocol().requestFunc != NULL) {
+        msg->request.sReqPayload = sReqPayload;
+    } else {
+        msg->sReqData = sReqPayload;
     }
 
     invoke(msg);
@@ -166,75 +159,64 @@ void ServiceProxy::rpc_call_async(uint32_t iRequestId, const string &sFuncName, 
 
 void ServiceProxy::invoke(ReqMessage *msg)
 {
-	msg->response.iMfwRet = SDPSERVERUNKNOWNERR;
+    msg->response.iMfwRet = SDPSERVERUNKNOWNERR;
 
     ServiceProxyThreadData *pSptd = ServiceProxyThreadData::getData();
     msg->bHash = pSptd->bSetHash;
     msg->iHashCode = pSptd->iHashCode;
     pSptd->bSetHash = false;
 
-	msg->request.iTimeout = msg->isSyncCall() ? m_iSyncTimeout : m_iAsyncTimeout;
-	if (pSptd->bSetTimeout)
-	{
-		msg->request.iTimeout = pSptd->iTimeoutMS;
-		pSptd->bSetTimeout = false;
-	}
+    msg->request.iTimeout = msg->isSyncCall() ? m_iSyncTimeout : m_iAsyncTimeout;
+    if (pSptd->bSetTimeout) {
+        msg->request.iTimeout = pSptd->iTimeoutMS;
+        pSptd->bSetTimeout = false;
+    }
 
-	if (!pSptd->mContext.empty())
-	{
-		msg->request.context = pSptd->mContext;
-		pSptd->mContext.clear();
-	}
+    if (!pSptd->mContext.empty()) {
+        msg->request.context = pSptd->mContext;
+        pSptd->mContext.clear();
+    }
 
     msg->iBeginTime = UtilTime::getNowMS();
     msg->pObjectProxy = m_pObjectProxy;
 
-    if (msg->isSyncCall())
-    {
+    if (msg->isSyncCall()) {
         msg->bMonitorFin = false;
         msg->pMonitor = new CNotifier();
     }
 
     bool bIsSyncCall = msg->isSyncCall();
     m_pObjectProxy->getConnectorImp()->addRequestMsg(msg);
-    if (!bIsSyncCall)
-    {
-    	return;
+    if (!bIsSyncCall) {
+        return;
     }
 
-	if (!msg->bMonitorFin)
-	{
-		CLockGuard<CNotifier> lock(*msg->pMonitor);
-		if (!msg->bMonitorFin)
-		{
-			msg->pMonitor->wait();
-		}
-	}
+    if (!msg->bMonitorFin) {
+        CLockGuard<CNotifier> lock(*msg->pMonitor);
+        if (!msg->bMonitorFin) {
+            msg->pMonitor->wait();
+        }
+    }
 
-	if (msg->eMsgStatus == ReqMessage::REQ_RSP && msg->response.iMfwRet == SDPSERVERSUCCESS)
-	{
-		return;
-	}
+    if (msg->eMsgStatus == ReqMessage::REQ_RSP && msg->response.iMfwRet == SDPSERVERSUCCESS) {
+        return;
+    }
 
-	ostringstream os;
-	if (msg->eMsgStatus == ReqMessage::REQ_TIME)
-	{
-		os << "invoke timeout: " << msg->request.iTimeout;
-	}
-	else
-	{
-		os << "invoke exception: " << msg->response.iMfwRet;
-	}
-	os << ", service: " << msg->pObjectProxy->getObjectName();
-	os << ", func: " << msg->request.sFuncName;
-	if (msg->pAdapterProxy)
-	{
-		os << ", adapter: " << msg->pAdapterProxy->getEndpoint().getDesc();
-	}
-	os << ", reqid: " << msg->request.iRequestId;
+    ostringstream os;
+    if (msg->eMsgStatus == ReqMessage::REQ_TIME) {
+        os << "invoke timeout: " << msg->request.iTimeout;
+    } else {
+        os << "invoke exception: " << msg->response.iMfwRet;
+    }
+    os << ", service: " << msg->pObjectProxy->getObjectName();
+    os << ", func: " << msg->request.sFuncName;
+    if (msg->pAdapterProxy) {
+        os << ", adapter: " << msg->pAdapterProxy->getEndpoint().getDesc();
+    }
+    os << ", reqid: " << msg->request.iRequestId;
 
-	delete msg;
-	throw std::runtime_error(os.str());
+    delete msg;
+    throw std::runtime_error(os.str());
 }
 
 }

@@ -5,7 +5,8 @@
 
 using namespace std;
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+{
 
     string s1 = "靐";
     cout << s1.size() << endl;

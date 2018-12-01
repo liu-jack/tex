@@ -12,8 +12,8 @@ public:
     virtual void initialize();
     virtual void destroy();
 
-	virtual void shutdown();
-	virtual string notify(const string &command);
+    virtual void shutdown();
+    virtual string notify(const string &command);
 };
 }
 

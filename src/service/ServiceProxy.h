@@ -11,15 +11,15 @@ namespace mfw
 class ServiceProxyThreadData
 {
 public:
-	ServiceProxyThreadData() : bSetHash(false), iHashCode(0), bSetTimeout(false), iTimeoutMS(0) {}
+    ServiceProxyThreadData() : bSetHash(false), iHashCode(0), bSetTimeout(false), iTimeoutMS(0) {}
     static ServiceProxyThreadData *getData();
 
 public:
     bool        bSetHash;
     uint64_t    iHashCode;
-	bool        bSetTimeout;
-	uint32_t	iTimeoutMS;
-	map<string, string> mContext;
+    bool        bSetTimeout;
+    uint32_t	iTimeoutMS;
+    map<string, string> mContext;
 };
 
 class ServiceProxyCallback : public tr1::enable_shared_from_this<ServiceProxyCallback>
@@ -28,8 +28,14 @@ public:
     ServiceProxyCallback();
     virtual ~ServiceProxyCallback() {}
 
-    void setNetThreadProcess(bool bNetThreadProcess) { m_bNetThreadProcess = bNetThreadProcess; }
-    bool getNetThreadProcess() { return m_bNetThreadProcess; }
+    void setNetThreadProcess(bool bNetThreadProcess)
+    {
+        m_bNetThreadProcess = bNetThreadProcess;
+    }
+    bool getNetThreadProcess()
+    {
+        return m_bNetThreadProcess;
+    }
 
 public:
     virtual void onDispatch(ReqMessage *msg) = 0;
@@ -49,17 +55,23 @@ public:
 
     const string &mfw_name() const;
     void mfw_sync_timeout(uint32_t ms);
-    int mfw_sync_timeout() const { return m_iSyncTimeout; }
+    int mfw_sync_timeout() const
+    {
+        return m_iSyncTimeout;
+    }
     void mfw_async_timeout(uint32_t ms);
-    int mfw_async_timeout() const { return m_iAsyncTimeout; }
+    int mfw_async_timeout() const
+    {
+        return m_iAsyncTimeout;
+    }
     void mfw_connect_timeout(uint32_t ms);
 
     void mfw_set_protocol(const ClientSideProtocol &protocol);
     vector<CEndpoint> mfw_get_endpoint();
 
     void mfw_hash(uint64_t iHashCode);
-	void mfw_set_timeout(uint32_t ms);
-	void mfw_set_context(const map<string, string> &context);
+    void mfw_set_timeout(uint32_t ms);
+    void mfw_set_context(const map<string, string> &context);
 
     void mfw_invoke(const string &sFuncName, const string &sReqPayload, ResponsePacket &rsp);
     void mfw_invoke_async(const string &sFuncName, const string &sReqPayload, const ServiceProxyCallbackPtr &callback);

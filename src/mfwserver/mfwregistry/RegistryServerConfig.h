@@ -4,10 +4,9 @@
 #include "util/util_mysql.h"
 using namespace mfw;
 
-struct RegistryServerConfig
-{
-	CDBConf		stDBConf;
-	uint32_t	iReloadInterval;
+struct RegistryServerConfig {
+    CDBConf		stDBConf;
+    uint32_t	iReloadInterval;
 };
 
 extern RegistryServerConfig g_stRegistryServerConfig;

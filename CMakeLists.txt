@@ -13,7 +13,7 @@ PROJECT(tex)
 INCLUDE(${CMAKE_SOURCE_DIR}/src/cmake/mfw-sdp.cmake)
 INCLUDE(${CMAKE_SOURCE_DIR}/src/cmake/luajit.cmake)
 
-ADD_DEFINITIONS(-Wno-deprecated -Wall -W -g -O0)
+ADD_DEFINITIONS(-Wno-deprecated -Wall -W -g -O3)
 ADD_SUBDIRECTORY(src)
 
 INSTALL(DIRECTORY script/DemoServer DESTINATION script)

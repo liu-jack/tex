@@ -15,14 +15,20 @@ public:
     virtual ~Application();
 
     int main(int argc, char *argv[]);
-    NetServerPtr &getNetServer() { return _netServer; }
-    ConnectorPtr &getConnector() { return _connector; }
+    NetServerPtr &getNetServer()
+    {
+        return _netServer;
+    }
+    ConnectorPtr &getConnector()
+    {
+        return _connector;
+    }
     void terminate();
 
 protected:
     virtual bool initialize() = 0;
     virtual void destroyApp() = 0;
-	virtual void loop();
+    virtual void loop();
 
     template<typename T>
     void addService(const string &sServiceName)

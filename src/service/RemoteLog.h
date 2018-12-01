@@ -10,7 +10,7 @@ namespace mfw
 class MfwRemoteLog
 {
 public:
-	static void initRemoteLog(const string &sLogObj, const string &sGlobalLogObj);
+    static void initRemoteLog(const string &sLogObj, const string &sGlobalLogObj);
 };
 
 }

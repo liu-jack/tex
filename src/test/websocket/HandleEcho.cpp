@@ -3,19 +3,23 @@
 #include "util/util_time.h"
 #include "Test.h"
 
-void HandleEcho::initialize() {
+void HandleEcho::initialize()
+{
     MFW_DEBUG("initialize");
 }
 
-void HandleEcho::destroy() {
+void HandleEcho::destroy()
+{
     MFW_DEBUG("destory");
 }
 
-int32_t HandleEcho::handleClose() {
+int32_t HandleEcho::handleClose()
+{
     MFW_DEBUG("websocket close");
 }
 
-int32_t HandleEcho::handleNoMfwRequest(const string &sReqPayload, string &sRspPayload) {
+int32_t HandleEcho::handleNoMfwRequest(const string &sReqPayload, string &sRspPayload)
+{
 
     Test::Class c;
     uint64_t t1 = UtilTime::getNowUS();

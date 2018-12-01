@@ -7,8 +7,8 @@ using namespace mfw;
 class DemoServer : public Application
 {
 public:
-	virtual void initialize();
-	virtual void destroyApp();
+    virtual void initialize();
+    virtual void destroyApp();
 };
 
 extern DemoServer g_app;

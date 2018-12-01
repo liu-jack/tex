@@ -27,13 +27,12 @@ extern "C" {
 # endif
 
 /* Structure to save state of computation between the single steps.  */
-struct sha512_ctx
-{
-  u64 state[8];
+struct sha512_ctx {
+    u64 state[8];
 
-  u64 total[2];
-  size_t buflen;
-  u64 buffer[32];
+    u64 total[2];
+    size_t buflen;
+    u64 buffer[32];
 };
 
 enum { SHA384_DIGEST_SIZE = 384 / 8 };
@@ -48,14 +47,14 @@ extern void sha384_init_ctx (struct sha512_ctx *ctx);
    starting at BUFFER.
    It is necessary that LEN is a multiple of 128!!! */
 extern void sha512_process_block (const void *buffer, size_t len,
-				  struct sha512_ctx *ctx);
+                                  struct sha512_ctx *ctx);
 
 /* Starting with the result of former calls of this function (or the
    initialization function update the context for the next LEN bytes
    starting at BUFFER.
    It is NOT required that LEN is a multiple of 128.  */
 extern void sha512_process_bytes (const void *buffer, size_t len,
-				  struct sha512_ctx *ctx);
+                                  struct sha512_ctx *ctx);
 
 /* Process the remaining bytes in the buffer and put result from CTX
    in first 64 (48) bytes following RESBUF.  The result is always in little

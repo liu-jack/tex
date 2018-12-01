@@ -13,8 +13,7 @@
 extern "C" {
 # endif
 
-typedef struct
-{
+typedef struct {
     uint32 erk[64];     /* encryption round keys */
     uint32 drk[64];     /* decryption round keys */
     int nr;             /* number of rounds */

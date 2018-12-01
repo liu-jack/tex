@@ -26,13 +26,12 @@ extern "C" {
 # endif
 
 /* Structure to save state of computation between the single steps.  */
-struct sha256_ctx
-{
-  uint32_t state[8];
+struct sha256_ctx {
+    uint32_t state[8];
 
-  uint32_t total[2];
-  size_t buflen;
-  uint32_t buffer[32];
+    uint32_t total[2];
+    size_t buflen;
+    uint32_t buffer[32];
 };
 
 enum { SHA224_DIGEST_SIZE = 224 / 8 };
@@ -47,14 +46,14 @@ extern void sha224_init_ctx (struct sha256_ctx *ctx);
    starting at BUFFER.
    It is necessary that LEN is a multiple of 64!!! */
 extern void sha256_process_block (const void *buffer, size_t len,
-				  struct sha256_ctx *ctx);
+                                  struct sha256_ctx *ctx);
 
 /* Starting with the result of former calls of this function (or the
    initialization function update the context for the next LEN bytes
    starting at BUFFER.
    It is NOT required that LEN is a multiple of 64.  */
 extern void sha256_process_bytes (const void *buffer, size_t len,
-				  struct sha256_ctx *ctx);
+                                  struct sha256_ctx *ctx);
 
 /* Process the remaining bytes in the buffer and put result from CTX
    in first 32 (28) bytes following RESBUF.  The result is always in little

@@ -10,19 +10,23 @@ namespace mfw
 
 class ServiceCreatorManager : public CSingleton<ServiceCreatorManager>
 {
-	class ServiceCreator
-	{
-	public:
-		virtual ~ServiceCreator() {}
-	    virtual ServicePtr create(const string &sServiceName) = 0;
-	};
-	typedef tr1::shared_ptr<ServiceCreator> ServiceCreatorPtr;
+    class ServiceCreator
+    {
+    public:
+        virtual ~ServiceCreator() {}
+        virtual ServicePtr create(const string &sServiceName) = 0;
+    };
+    typedef tr1::shared_ptr<ServiceCreator> ServiceCreatorPtr;
 
-	template<class T>
-	struct ServiceCreatorConcrete : public ServiceCreator
-	{
-	    ServicePtr create(const string &sServiceName) { ServicePtr p(new T); p->setServiceName(sServiceName); return p; }
-	};
+    template<class T>
+    struct ServiceCreatorConcrete : public ServiceCreator {
+        ServicePtr create(const string &sServiceName)
+        {
+            ServicePtr p(new T);
+            p->setServiceName(sServiceName);
+            return p;
+        }
+    };
 
 public:
     template<typename T>

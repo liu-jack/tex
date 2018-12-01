@@ -8,11 +8,11 @@ DemoServerConfig g_stDemoServerConfig;
 
 int32_t loadDemoServerConfig()
 {
-	__TRY__
-	CConfig config;
-	config.parseFile(ServerConfig::ServerName + ".conf");
+    __TRY__
+    CConfig config;
+    config.parseFile(ServerConfig::ServerName + ".conf");
 
-	return 0;
-	__CATCH__
-	return -1;
+    return 0;
+    __CATCH__
+    return -1;
 }

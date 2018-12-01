@@ -6,7 +6,7 @@
 class EchoImp : public Test::Echo
 {
 public:
-	virtual void initialize();
+    virtual void initialize();
     virtual void destroy();
 };
 #endif

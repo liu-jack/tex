@@ -25,45 +25,38 @@ Application::~Application()
 
 void Application::parseConfig(int argc, char *argv[])
 {
-	COption option;
-	option.parse(argc, argv);
+    COption option;
+    option.parse(argc, argv);
 
-	string sConfigFile = option.getOption("config");
-	if (sConfigFile == "")
-	{
-		cerr << "Usage: " << argv[0] << " --mfw.conf" << endl;
-		exit(0);
-	}
-	loadApplicationConfig(sConfigFile);
+    string sConfigFile = option.getOption("config");
+    if (sConfigFile == "") {
+        cerr << "Usage: " << argv[0] << " --mfw.conf" << endl;
+        exit(0);
+    }
+    loadApplicationConfig(sConfigFile);
 
     ServerConfig::Application  		= g_stApplicationConfig.sAppName;
     ServerConfig::ServerName        = g_stApplicationConfig.sServerName;
 
-	string sNoDaemon = option.getOption("nodaemon");
-	if (sNoDaemon != "1")
-	{
-		int32_t iRet = daemon(1, 0);
-		if (iRet != 0)
-		{
-			cerr << "start as daemon error: " << iRet << endl;
-			exit(0);
-		}
-	}
+    string sNoDaemon = option.getOption("nodaemon");
+    if (sNoDaemon != "1") {
+        int32_t iRet = daemon(1, 0);
+        if (iRet != 0) {
+            cerr << "start as daemon error: " << iRet << endl;
+            exit(0);
+        }
+    }
 
-    if (!g_stApplicationConfig.sLogPath.empty())
-	{
-		string sLogPath = g_stApplicationConfig.sLogPath + "/" + ServerConfig::Application + "/";
-		if (g_stApplicationConfig.stCommConfig.bIsSetEnabled)
-		{
-			sLogPath += g_stApplicationConfig.stCommConfig.sDivision + "/";
-		}
-		sLogPath += ServerConfig::ServerName;
-		CLogManager::getInstance()->initLog(sLogPath, ServerConfig::Application + "." + ServerConfig::ServerName);
-	}
-	else
-	{
-		CLogManager::getInstance()->initLog("./", "");
-	}
+    if (!g_stApplicationConfig.sLogPath.empty()) {
+        string sLogPath = g_stApplicationConfig.sLogPath + "/" + ServerConfig::Application + "/";
+        if (g_stApplicationConfig.stCommConfig.bIsSetEnabled) {
+            sLogPath += g_stApplicationConfig.stCommConfig.sDivision + "/";
+        }
+        sLogPath += ServerConfig::ServerName;
+        CLogManager::getInstance()->initLog(sLogPath, ServerConfig::Application + "." + ServerConfig::ServerName);
+    } else {
+        CLogManager::getInstance()->initLog("./", "");
+    }
 
     CLogManager::getInstance()->setLogLevel(g_stApplicationConfig.sLogLevel, g_stApplicationConfig.sFrameworkLogLevel);
     CLogManager::getInstance()->setRollLogInfo(CLogManager::getInstance()->getRollLog(), g_stApplicationConfig.iLogNum, g_stApplicationConfig.iLogSize);
@@ -80,10 +73,9 @@ void Application::initializeClient()
 void Application::initializeServer()
 {
     _netServer = NetServerPtr(new NetServer());
-	
-    if (!g_stApplicationConfig.sLocalAdminObj.empty())
-    {
-    	string sServiceName = "AdminObj";
+
+    if (!g_stApplicationConfig.sLocalAdminObj.empty()) {
+        string sServiceName = "AdminObj";
         BindAdapterPtr lsPtr(new BindAdapter(_netServer.get(), sServiceName));
         lsPtr->setEndpoint(g_stApplicationConfig.sLocalAdminObj);
         lsPtr->setHandle<ServiceHandle>(1);
@@ -92,26 +84,24 @@ void Application::initializeServer()
         ServiceCreatorManager::getInstance()->addService<AdminService>(sServiceName);
     }
 
-	for (unsigned i = 0; i < g_stApplicationConfig.vServiceConfig.size(); ++i)
-	{
-		const ServiceConfig &stServiceConfig = g_stApplicationConfig.vServiceConfig[i];
+    for (unsigned i = 0; i < g_stApplicationConfig.vServiceConfig.size(); ++i) {
+        const ServiceConfig &stServiceConfig = g_stApplicationConfig.vServiceConfig[i];
 
-		BindAdapterPtr lsPtr(new BindAdapter(_netServer.get(), stServiceConfig.sService));
-		lsPtr->setEndpoint(stServiceConfig.sEndpoint);
-		lsPtr->setMaxConns(stServiceConfig.iMaxConnection);
-		lsPtr->setQueueCapacity(stServiceConfig.iMaxQueue);
-		lsPtr->setQueueTimeout(stServiceConfig.iQueueTimeout);
-		lsPtr->setProtocolName(stServiceConfig.sProtocol);
-		lsPtr->setHandle<ServiceHandle>(stServiceConfig.iThreadNum);
-		_netServer->bind(lsPtr);
-	}
+        BindAdapterPtr lsPtr(new BindAdapter(_netServer.get(), stServiceConfig.sService));
+        lsPtr->setEndpoint(stServiceConfig.sEndpoint);
+        lsPtr->setMaxConns(stServiceConfig.iMaxConnection);
+        lsPtr->setQueueCapacity(stServiceConfig.iMaxQueue);
+        lsPtr->setQueueTimeout(stServiceConfig.iQueueTimeout);
+        lsPtr->setProtocolName(stServiceConfig.sProtocol);
+        lsPtr->setHandle<ServiceHandle>(stServiceConfig.iThreadNum);
+        _netServer->bind(lsPtr);
+    }
 }
 
 void Application::addServiceProtocol(const string &sServiceName, const protocol_functor &fn)
 {
-	BindAdapterPtr pBindAdapter = _netServer->getNetThread()->getBindAdapter(sServiceName);
-    if (!pBindAdapter)
-    {
+    BindAdapterPtr pBindAdapter = _netServer->getNetThread()->getBindAdapter(sServiceName);
+    if (!pBindAdapter) {
         throw runtime_error("service not exist: " + sServiceName);
     }
     pBindAdapter->setProtocol(fn);
@@ -123,45 +113,40 @@ void Application::loop()
 
 void Application::terminate()
 {
-    if (_netServer)
-    {
+    if (_netServer) {
         _netServer->terminate();
     }
 }
 
 int Application::main(int argc, char *argv[])
 {
-    try
-    {
+    try {
         parseConfig(argc, argv);
         initializeClient();
         initializeServer();
         signal(SIGINT, sighandler);
         signal(SIGTERM, sighandler);
-		signal(SIGPIPE, SIG_IGN);
+        signal(SIGPIPE, SIG_IGN);
 
         if (initialize()) {
             _netServer->launch();
-		    while(_netServer->isTerminate() == false)
-		    {
-			    _netServer->waitNotify(g_stApplicationConfig.iLoopInterval);
+            while(_netServer->isTerminate() == false) {
+                _netServer->waitNotify(g_stApplicationConfig.iLoopInterval);
 
-			    loop();
-		    }
+                loop();
+            }
         }
 
         destroyApp();
         _netServer.reset();
 
         // 结束远程日志,要不然会因为clientnet线程的退出而导致ServieProxy的同步调用无限等待
-        CLogManager::getInstance()->setRemoteCallback(tr1::function<void(list<MfwLogData> &)>());	
+        CLogManager::getInstance()->setRemoteCallback(tr1::function<void(list<MfwLogData> &)>());
 
         _connector.reset();
         CLogManager::getInstance()->finiLog();
-    }
-    catch (std::exception &e)
-    {
-    	MFW_ERROR("application exception: " << e.what());
+    } catch (std::exception &e) {
+        MFW_ERROR("application exception: " << e.what());
 
         CLogManager::getInstance()->finiLog();
 

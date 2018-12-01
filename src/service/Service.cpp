@@ -6,7 +6,7 @@ namespace mfw
 
 CallbackThreadData *CallbackThreadData::getData()
 {
-	CallbackThreadData *pCbtd = ThreadSingleton<CallbackThreadData>::get();
+    CallbackThreadData *pCbtd = ThreadSingleton<CallbackThreadData>::get();
     return pCbtd;
 }
 

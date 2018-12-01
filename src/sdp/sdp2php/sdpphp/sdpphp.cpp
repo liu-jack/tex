@@ -5,7 +5,7 @@
    +----------------------------------------------------------------------+
 */
 
-/* $ Id: $ */ 
+/* $ Id: $ */
 
 #include "php_sdpphp.h"
 #include "sdpphp_imp.h"
@@ -18,10 +18,12 @@ extern "C" {
 
 /* {{{ sdpphp_functions[] */
 zend_function_entry sdpphp_functions[] = {
-	ZEND_FE(printSdp, NULL)
-	ZEND_FE(sdpToString, NULL)
-	ZEND_FE(stringToSdp, NULL)
-	{ NULL, NULL, NULL }
+    ZEND_FE(printSdp, NULL)
+    ZEND_FE(sdpToString, NULL)
+    ZEND_FE(stringToSdp, NULL)
+    {
+        NULL, NULL, NULL
+    }
 };
 /* }}} */
 
@@ -29,16 +31,16 @@ zend_function_entry sdpphp_functions[] = {
 /* {{{ sdpphp_module_entry
  */
 zend_module_entry sdpphp_module_entry = {
-	STANDARD_MODULE_HEADER,
-	"sdpphp",
-	sdpphp_functions,
-	PHP_MINIT(sdpphp),     /* Replace with NULL if there is nothing to do at php startup   */ 
-	PHP_MSHUTDOWN(sdpphp), /* Replace with NULL if there is nothing to do at php shutdown  */
-	PHP_RINIT(sdpphp),     /* Replace with NULL if there is nothing to do at request start */
-	PHP_RSHUTDOWN(sdpphp), /* Replace with NULL if there is nothing to do at request end   */
-	PHP_MINFO(sdpphp),
-	PHP_SDPPHP_VERSION, 
-	STANDARD_MODULE_PROPERTIES
+    STANDARD_MODULE_HEADER,
+    "sdpphp",
+    sdpphp_functions,
+    PHP_MINIT(sdpphp),     /* Replace with NULL if there is nothing to do at php startup   */
+    PHP_MSHUTDOWN(sdpphp), /* Replace with NULL if there is nothing to do at php shutdown  */
+    PHP_RINIT(sdpphp),     /* Replace with NULL if there is nothing to do at request start */
+    PHP_RSHUTDOWN(sdpphp), /* Replace with NULL if there is nothing to do at request end   */
+    PHP_MINFO(sdpphp),
+    PHP_SDPPHP_VERSION,
+    STANDARD_MODULE_PROPERTIES
 };
 /* }}} */
 
@@ -51,9 +53,9 @@ ZEND_GET_MODULE(sdpphp)
 PHP_MINIT_FUNCTION(sdpphp)
 {
 
-	/* add your stuff here */
+    /* add your stuff here */
 
-	return SUCCESS;
+    return SUCCESS;
 }
 /* }}} */
 
@@ -62,9 +64,9 @@ PHP_MINIT_FUNCTION(sdpphp)
 PHP_MSHUTDOWN_FUNCTION(sdpphp)
 {
 
-	/* add your stuff here */
+    /* add your stuff here */
 
-	return SUCCESS;
+    return SUCCESS;
 }
 /* }}} */
 
@@ -72,9 +74,9 @@ PHP_MSHUTDOWN_FUNCTION(sdpphp)
 /* {{{ PHP_RINIT_FUNCTION */
 PHP_RINIT_FUNCTION(sdpphp)
 {
-	/* add your stuff here */
+    /* add your stuff here */
 
-	return SUCCESS;
+    return SUCCESS;
 }
 /* }}} */
 
@@ -82,9 +84,9 @@ PHP_RINIT_FUNCTION(sdpphp)
 /* {{{ PHP_RSHUTDOWN_FUNCTION */
 PHP_RSHUTDOWN_FUNCTION(sdpphp)
 {
-	/* add your stuff here */
+    /* add your stuff here */
 
-	return SUCCESS;
+    return SUCCESS;
 }
 /* }}} */
 
@@ -92,13 +94,13 @@ PHP_RSHUTDOWN_FUNCTION(sdpphp)
 /* {{{ PHP_MINFO_FUNCTION */
 PHP_MINFO_FUNCTION(sdpphp)
 {
-	php_printf("The unknown extension\n");
-	php_info_print_table_start();
-	php_info_print_table_row(2, "Version",PHP_SDPPHP_VERSION " (devel)");
-	php_info_print_table_row(2, "Released", "2014-05-29");
-	php_info_print_table_row(2, "CVS Revision", "$Id: $");
-	php_info_print_table_end();
-	/* add your stuff here */
+    php_printf("The unknown extension\n");
+    php_info_print_table_start();
+    php_info_print_table_row(2, "Version",PHP_SDPPHP_VERSION " (devel)");
+    php_info_print_table_row(2, "Released", "2014-05-29");
+    php_info_print_table_row(2, "CVS Revision", "$Id: $");
+    php_info_print_table_end();
+    /* add your stuff here */
 
 }
 /* }}} */

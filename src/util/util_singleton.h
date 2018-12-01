@@ -10,44 +10,42 @@ template<typename T>
 class ThreadSingleton
 {
 public:
-	static T *get()
-	{
-		pthread_once(&_isinited, init);
-		T *t = (T *)pthread_getspecific(_key);
-		if(t == NULL)
-		{
-			t = new T();
-			set(t);
-		}
-		return t;
-	}
-	static void del()
-	{
-		delete get();
-		set(NULL);
-	}
+    static T *get()
+    {
+        pthread_once(&_isinited, init);
+        T *t = (T *)pthread_getspecific(_key);
+        if(t == NULL) {
+            t = new T();
+            set(t);
+        }
+        return t;
+    }
+    static void del()
+    {
+        delete get();
+        set(NULL);
+    }
 
 private:
-	static void set(T *t)
-	{
-		pthread_setspecific(_key, t);
-	}
+    static void set(T *t)
+    {
+        pthread_setspecific(_key, t);
+    }
 
-	static void destructor(void *p)
-	{
-		if(p)
-		{
-			delete (T*)p;
-		}
-	}
+    static void destructor(void *p)
+    {
+        if(p) {
+            delete (T*)p;
+        }
+    }
 
-	static void init()
-	{
-		pthread_key_create(&_key, destructor);
-	}
+    static void init()
+    {
+        pthread_key_create(&_key, destructor);
+    }
 
-	static pthread_key_t _key;
-	static pthread_once_t _isinited;
+    static pthread_key_t _key;
+    static pthread_once_t _isinited;
 };
 
 template <typename T>
@@ -60,20 +58,20 @@ template<typename T>
 class ProcessSingleton
 {
 public:
-	static T *get()
-	{
-		pthread_once(&_isinited, init);
-		return m_pInstance;
-	}
+    static T *get()
+    {
+        pthread_once(&_isinited, init);
+        return m_pInstance;
+    }
 private:
-	static void init()
-	{
-		m_pInstance = new T();
-	}
+    static void init()
+    {
+        m_pInstance = new T();
+    }
 
 private:
-	static T *m_pInstance;
-	static pthread_once_t _isinited;
+    static T *m_pInstance;
+    static pthread_once_t _isinited;
 };
 
 template <typename T>
@@ -86,7 +84,10 @@ template <typename T>
 class CSingleton
 {
 public:
-	static T *getInstance() { return ProcessSingleton<T>::get(); }
+    static T *getInstance()
+    {
+        return ProcessSingleton<T>::get();
+    }
 };
 
 }

@@ -5,7 +5,7 @@
    +----------------------------------------------------------------------+
 */
 
-/* $ Id: $ */ 
+/* $ Id: $ */
 
 #ifndef PHP_SDPPHP_H
 #define PHP_SDPPHP_H
@@ -31,7 +31,7 @@ extern "C" {
 #include <ext/standard/info.h>
 #include <Zend/zend_extensions.h>
 #ifdef  __cplusplus
-} // extern "C" 
+} // extern "C"
 #endif
 #ifdef  __cplusplus
 extern "C" {
@@ -71,7 +71,7 @@ PHP_MINFO_FUNCTION(sdpphp);
 
 
 #ifdef  __cplusplus
-} // extern "C" 
+} // extern "C"
 #endif
 
 #endif /* PHP_HAVE_SDPPHP */

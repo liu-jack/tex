@@ -11,7 +11,10 @@ namespace mfw
 class UtilBase64
 {
 public:
-	static uint32_t getEncodeLength(uint32_t iLen) { return (iLen + 2) / 3 * 4; }
+    static uint32_t getEncodeLength(uint32_t iLen)
+    {
+        return (iLen + 2) / 3 * 4;
+    }
 
     static string encode(const string &sData);
     static string decode(const string &sData);

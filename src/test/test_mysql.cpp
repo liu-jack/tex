@@ -8,7 +8,8 @@
 using namespace mfw;
 using namespace std;
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+{
 
     CLogManager::getInstance()->initLog("./", "-");
 
@@ -16,8 +17,8 @@ int main(int argc, char* argv[]) {
     config.parse(argc, argv);
 
     if (!config.hasOption("h")
-    || !config.hasOption("u")
-    || !config.hasOption("p")) {
+            || !config.hasOption("u")
+            || !config.hasOption("p")) {
         cout << "Usage: " <<  argv[0] << endl;
         cout << " --h host" << endl;
         cout << " --P port default=3306" << endl;
@@ -42,7 +43,7 @@ int main(int argc, char* argv[]) {
 
         mysql.execute("insert into a(id) values(3);");
         mysql.execute("insert into a(id) values(3);");
-        
+
         transaction.commit();
 
         mysql.execute("insert into a(id) values(3);");

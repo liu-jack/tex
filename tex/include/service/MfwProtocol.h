@@ -18,7 +18,7 @@ public:
 class ClientSideProtocol
 {
 public:
-	ClientSideProtocol() : requestFunc(mfwRequest), responseFunc(mfwResponse) {}
+    ClientSideProtocol() : requestFunc(mfwRequest), responseFunc(mfwResponse) {}
 
     static void mfwRequest(const RequestPacket &request, string &buff);
     static size_t mfwResponse(const char *recvBuffer, size_t length, list<ResponsePacket> &done);

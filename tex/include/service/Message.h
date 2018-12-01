@@ -8,17 +8,14 @@
 namespace mfw
 {
 
-struct ReqMessage
-{
-    enum CallType
-    {
+struct ReqMessage {
+    enum CallType {
         SYNC_CALL,
         ASYNC_CALL,
         ONE_WAY,
     };
 
-    enum MsgStatus
-    {
+    enum MsgStatus {
         REQ_REQ,
         REQ_RSP,
         REQ_TIME,
@@ -41,30 +38,38 @@ struct ReqMessage
     AdapterProxy				*pAdapterProxy;
 
     ReqMessage() :
-    	eMsgStatus(ReqMessage::REQ_REQ),
-    	eCallType(SYNC_CALL),
-    	bFromRpc(false),
-    	iBeginTime(0),
-    	bHash(false),
-    	iHashCode(0),
-    	pMonitor(NULL),
-    	bMonitorFin(false),
-    	pObjectProxy(NULL),
-    	pAdapterProxy(NULL)
+        eMsgStatus(ReqMessage::REQ_REQ),
+        eCallType(SYNC_CALL),
+        bFromRpc(false),
+        iBeginTime(0),
+        bHash(false),
+        iHashCode(0),
+        pMonitor(NULL),
+        bMonitorFin(false),
+        pObjectProxy(NULL),
+        pAdapterProxy(NULL)
     {
     }
 
     ~ReqMessage()
     {
-        if (pMonitor != NULL)
-        {
+        if (pMonitor != NULL) {
             delete pMonitor;
         }
     }
 
-    bool isSyncCall() const { return eCallType == SYNC_CALL; }
-    bool isAsyncCall() const { return eCallType == ASYNC_CALL; }
-    bool isOnewayCall() const { return eCallType == ONE_WAY; }
+    bool isSyncCall() const
+    {
+        return eCallType == SYNC_CALL;
+    }
+    bool isAsyncCall() const
+    {
+        return eCallType == ASYNC_CALL;
+    }
+    bool isOnewayCall() const
+    {
+        return eCallType == ONE_WAY;
+    }
 };
 
 }

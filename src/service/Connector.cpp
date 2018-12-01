@@ -3,7 +3,8 @@
 namespace mfw
 {
 
-Connector::Connector() {
+Connector::Connector()
+{
     m_pConnectorImp = ConnectorImpPtr(new ConnectorImp(this));
 }
 
@@ -26,13 +27,12 @@ void Connector::initClientConfig()
 
 ServicePrx &Connector::getServiceProxy(const string &sObjectName)
 {
-	CLockGuard<CMutex> lock(m_mutex);
+    CLockGuard<CMutex> lock(m_mutex);
 
-	map<string, ServicePrx>::iterator it = m_mServiceProxy.find(sObjectName);
-	if (it != m_mServiceProxy.end())
-	{
-		return it->second;
-	}
+    map<string, ServicePrx>::iterator it = m_mServiceProxy.find(sObjectName);
+    if (it != m_mServiceProxy.end()) {
+        return it->second;
+    }
 
     ObjectProxy *pObjectProxy = m_pConnectorImp->getObjectProxy(sObjectName);
     ServicePrx pServiceProxy(new ServiceProxy(pObjectProxy));

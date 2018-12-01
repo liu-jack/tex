@@ -16,12 +16,19 @@ public:
     Connector();
     ~Connector();
 
-    void setConfig(const ConnectorConfig &cfg) { m_commcfg = cfg; initClientConfig(); }
-    const ConnectorConfig &getConfig() const { return m_commcfg; }
+    void setConfig(const ConnectorConfig &cfg)
+    {
+        m_commcfg = cfg;
+        initClientConfig();
+    }
+    const ConnectorConfig &getConfig() const
+    {
+        return m_commcfg;
+    }
 
     template<class T> T stringToProxy(const string &sObjectName)
     {
-    	ServicePrx &pServiceProxy = getServiceProxy(sObjectName);
+        ServicePrx &pServiceProxy = getServiceProxy(sObjectName);
         return tr1::static_pointer_cast<typename T::element_type>(pServiceProxy);
     }
 

@@ -17,29 +17,29 @@ namespace mfw
 class UtilTime
 {
 public:
-	static uint32_t getNow();
-	static uint64_t getNowMS();
-	static uint64_t getNowUS();
+    static uint32_t getNow();
+    static uint64_t getNowMS();
+    static uint64_t getNowUS();
 
-	static string formatTime(uint32_t iTime, const char *fmt = "%Y-%m-%d %H:%M:%S");
-	static uint32_t parseTime(const string &sTime, const char *fmt = "%Y-%m-%d %H:%M:%S");
-	static void parseTime(const string &sTime, struct tm &stTm, const char *fmt = "%Y-%m-%d %H:%M:%S");
+    static string formatTime(uint32_t iTime, const char *fmt = "%Y-%m-%d %H:%M:%S");
+    static uint32_t parseTime(const string &sTime, const char *fmt = "%Y-%m-%d %H:%M:%S");
+    static void parseTime(const string &sTime, struct tm &stTm, const char *fmt = "%Y-%m-%d %H:%M:%S");
 
-	// 获取小时数
-	static uint32_t getHour(uint32_t iTime, int32_t offset = 0);
+    // 获取小时数
+    static uint32_t getHour(uint32_t iTime, int32_t offset = 0);
 
-	// eg: 2014-08-20 transfer to 20140820
-	static uint32_t getDate(uint32_t iTime, int32_t offset = 0);
-	//@param iDate format: 20140820
-	static uint32_t fromDate(uint32_t iDate, uint32_t iHour = 0);
+    // eg: 2014-08-20 transfer to 20140820
+    static uint32_t getDate(uint32_t iTime, int32_t offset = 0);
+    //@param iDate format: 20140820
+    static uint32_t fromDate(uint32_t iDate, uint32_t iHour = 0);
 
-	// eg："23:09:12" transfer to 230912
-	static uint32_t parseDayTime(const string &sTime);
-	// get hour,min,sec ,eg:230912
-	static uint32_t getDayTime(uint32_t iTime);
+    // eg："23:09:12" transfer to 230912
+    static uint32_t parseDayTime(const string &sTime);
+    // get hour,min,sec ,eg:230912
+    static uint32_t getDayTime(uint32_t iTime);
 
-	static uint32_t getTimeByDayOffset(uint32_t iTime, uint32_t iDayOffset, uint32_t iDayTimeOffset);
-	static bool isInDayTimeRange(uint32_t iTime, uint32_t from, uint32_t end);
+    static uint32_t getTimeByDayOffset(uint32_t iTime, uint32_t iDayOffset, uint32_t iDayTimeOffset);
+    static bool isInDayTimeRange(uint32_t iTime, uint32_t from, uint32_t end);
 };
 
 // 毫秒级定时器
@@ -48,7 +48,7 @@ class UtilTimer
 public:
     UtilTimer(uint64_t iInterval, uint64_t iCurrTime)
         : m_iInterval(iInterval),
-        m_iLastTriggerTime(iCurrTime)
+          m_iLastTriggerTime(iCurrTime)
     {
     }
 

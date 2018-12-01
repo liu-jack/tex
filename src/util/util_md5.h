@@ -11,7 +11,7 @@ namespace mfw
 class UtilMD5
 {
 public:
-	// 结果：16字节二进制数据
+    // 结果：16字节二进制数据
     static string md5bin(const string &s);
     static string md5filebin(const string &sFile);
 

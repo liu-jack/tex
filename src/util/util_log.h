@@ -14,58 +14,55 @@ using namespace std;
 namespace mfw
 {
 
-enum MfwLogLevel
-{
-	MfwLogLevel_Debug,
-	MfwLogLevel_Info,
-	MfwLogLevel_Error,
-	MfwLogLevel_None,
+enum MfwLogLevel {
+    MfwLogLevel_Debug,
+    MfwLogLevel_Info,
+    MfwLogLevel_Error,
+    MfwLogLevel_None,
 };
 
-enum MfwLogType
-{
-	MfwLogType_Roll,
-	MfwLogType_Day,
-	MfwLogType_Hour,
-	MfwLogType_GlobalDay,
-	MfwLogType_GlobalHour,
-	MfwLogType_LocalDay,
-	MfwLogType_LocalHour,
-	MfwLogType_LocalGlobalDay,
-	MfwLogType_LocalGlobalHour,
+enum MfwLogType {
+    MfwLogType_Roll,
+    MfwLogType_Day,
+    MfwLogType_Hour,
+    MfwLogType_GlobalDay,
+    MfwLogType_GlobalHour,
+    MfwLogType_LocalDay,
+    MfwLogType_LocalHour,
+    MfwLogType_LocalGlobalDay,
+    MfwLogType_LocalGlobalHour,
 };
 
 class CLog;
 
-struct MfwLogData
-{
-	CLog		*log;
-	uint32_t	iTime;
-	string		sData;
+struct MfwLogData {
+    CLog		*log;
+    uint32_t	iTime;
+    string		sData;
 };
 
 class CLogManager : public CSingleton<CLogManager>
 {
 public:
     CLogManager();
-	void initLog(const string &sLogPath, const string &sLogPrefix);
-	void finiLog();
-	void setRemoteCallback(tr1::function<void(list<MfwLogData> &)> cb);
-	void setRollLogInfo(CLog *log, uint32_t iMaxFile, uint64_t iMaxSize);
-	void setLogLevel(MfwLogLevel level, MfwLogLevel frameworkLevel);
-	void setLogLevel(const string &sLevel, const string &sFrameworkLevel);
+    void initLog(const string &sLogPath, const string &sLogPrefix);
+    void finiLog();
+    void setRemoteCallback(tr1::function<void(list<MfwLogData> &)> cb);
+    void setRollLogInfo(CLog *log, uint32_t iMaxFile, uint64_t iMaxSize);
+    void setLogLevel(MfwLogLevel level, MfwLogLevel frameworkLevel);
+    void setLogLevel(const string &sLevel, const string &sFrameworkLevel);
 
-	CLog *getRollLog(const string &sFileName = "");
-	CLog *getDayLog(const string &sFileName, bool bGlobal = false, bool bLocal = false);
-	CLog *getHourLog(const string &sFileName, bool bGlobal = false, bool bLocal = false);
-	bool checkLogLevel(MfwLogLevel level, bool bIsFramework);
-	MfwLogType getLogType(CLog *log);
-	const string &getLogFileName(CLog *log);
-	void addLog(CLog *log, const string &sData);
+    CLog *getRollLog(const string &sFileName = "");
+    CLog *getDayLog(const string &sFileName, bool bGlobal = false, bool bLocal = false);
+    CLog *getHourLog(const string &sFileName, bool bGlobal = false, bool bLocal = false);
+    bool checkLogLevel(MfwLogLevel level, bool bIsFramework);
+    MfwLogType getLogType(CLog *log);
+    const string &getLogFileName(CLog *log);
+    void addLog(CLog *log, const string &sData);
 
-	string filterLogData(const string &sData, uint32_t iMaxSize = 0);
-	string escapeLogData(const string &sData, uint32_t iMaxSize = 0);
-	string unescapeLogData(const string &sData);
+    string filterLogData(const string &sData, uint32_t iMaxSize = 0);
+    string escapeLogData(const string &sData, uint32_t iMaxSize = 0);
+    string unescapeLogData(const string &sData);
 
 private:
     void cleanupMfwLog();

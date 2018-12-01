@@ -16,11 +16,20 @@ public:
     AdapterProxy(ObjectProxy *pObjectProxy, const CEndpoint &ep);
     ~AdapterProxy();
 
-    ObjectProxy *getObjectProxy() { return m_pObjectProxy; }
-    const CEndpoint &getEndpoint() const { return m_ep; }
-    const string &getFullDesc() const { return m_sFullDesc; }
+    ObjectProxy *getObjectProxy()
+    {
+        return m_pObjectProxy;
+    }
+    const CEndpoint &getEndpoint() const
+    {
+        return m_ep;
+    }
+    const string &getFullDesc() const
+    {
+        return m_sFullDesc;
+    }
 
-	void invoke(ReqMessage *msg);
+    void invoke(ReqMessage *msg);
     void doInvoke();
     void finishInvoke(ResponsePacket &rsp);
     void finishInvoke(ReqMessage *msg);
@@ -29,9 +38,15 @@ public:
     bool checkActive(bool bForceConnect = false);
 
     void setConnTimeout(bool bConTimeout);
-	bool isConnTimeout() { return m_bConnTimeout; }
+    bool isConnTimeout()
+    {
+        return m_bConnTimeout;
+    }
     void setConnExc(bool bExc);
-	bool isConnExc() { return m_bConnExc; }
+    bool isConnExc()
+    {
+        return m_bConnExc;
+    }
 
 private:
     void doTimeout(uint64_t iNowMS, CTimeQueue<ReqMessage *, uint64_t> &requestQueue);
@@ -59,8 +74,8 @@ private:
     bool m_bIsActive;
     uint32_t m_iNextRetryTime;
 
-	bool m_bConnTimeout;
-	bool m_bConnExc;
+    bool m_bConnTimeout;
+    bool m_bConnExc;
 };
 
 }

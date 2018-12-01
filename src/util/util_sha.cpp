@@ -12,38 +12,36 @@
 
 string UtilSHA::FUNC_BIN(const string &s)
 {
-	char result[DIGEST_RESULT_SIZE];
-	FUNC_DIGEST_BUFFER(s.c_str(), s.size(), result);
-	return string(result, result + sizeof(result));
+    char result[DIGEST_RESULT_SIZE];
+    FUNC_DIGEST_BUFFER(s.c_str(), s.size(), result);
+    return string(result, result + sizeof(result));
 }
 
 string UtilSHA::FUNC_FILEBIN(const string &sFile)
 {
-	FILE *fp = fopen(sFile.c_str(), "rb");
-	if (fp == NULL)
-	{
-		return "";
-	}
+    FILE *fp = fopen(sFile.c_str(), "rb");
+    if (fp == NULL) {
+        return "";
+    }
 
-	char result[DIGEST_RESULT_SIZE];
-	int ret = FUNC_DIGEST_STREAM(fp, result);
-	fclose(fp);
+    char result[DIGEST_RESULT_SIZE];
+    int ret = FUNC_DIGEST_STREAM(fp, result);
+    fclose(fp);
 
-	if (ret != 0)
-	{
-		return "";
-	}
-	return string(result, result + sizeof(result));
+    if (ret != 0) {
+        return "";
+    }
+    return string(result, result + sizeof(result));
 }
 
 string UtilSHA::FUNC_HEX(const string &s)
 {
-	return UtilEncode::toHex(FUNC_BIN(s));
+    return UtilEncode::toHex(FUNC_BIN(s));
 }
 
 string UtilSHA::FUNC_FILEHEX(const string &sFile)
 {
-	return UtilEncode::toHex(FUNC_FILEBIN(sFile));
+    return UtilEncode::toHex(FUNC_FILEBIN(sFile));
 }
 
 #undef DIGEST_NAME

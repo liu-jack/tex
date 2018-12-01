@@ -10,8 +10,8 @@ namespace mfw
 class UtilZlib
 {
 public:
-	static string zlib_compress(const string &sData, int level = -1);
-	static string zlib_uncompress(const string &sData);
+    static string zlib_compress(const string &sData, int level = -1);
+    static string zlib_uncompress(const string &sData);
 
     static bool zlib_compress(const string &sData, string &sResult, int level = -1);
     static bool zlib_uncompress(const string &sData, string &sResult);

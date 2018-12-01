@@ -9,10 +9,10 @@ namespace mfw
 class ServiceHandle : public Handle
 {
 public:
-	~ServiceHandle();
+    ~ServiceHandle();
 
 protected:
-	virtual bool initialize();
+    virtual bool initialize();
     virtual void handle(const tagRecvData &stRecvData);
     virtual void handleTimeout(const tagRecvData &stRecvData);
     virtual void handleOverload(const tagRecvData &stRecvData);

@@ -16,7 +16,10 @@ public:
     explicit ConnectorImp(Connector *pConnector);
     ~ConnectorImp();
 
-    Connector *getConnector() { return m_pConnector; }
+    Connector *getConnector()
+    {
+        return m_pConnector;
+    }
     ObjectProxy *getObjectProxy(const string &sObjectName);
 
     void addFd(int fd, Transport *pTransport);

@@ -5,9 +5,10 @@
 using namespace mfw;
 using namespace std;
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+{
 
-    CLogManager::getInstance()->initLog("./", "-");        
+    CLogManager::getInstance()->initLog("./", "-");
 
     try {
         LuaValue value;

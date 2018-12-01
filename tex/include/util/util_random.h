@@ -9,8 +9,8 @@ namespace mfw
 class UtilRandom
 {
 public:
-	static uint32_t random32();
-	static uint32_t random32(uint32_t min, uint32_t max);
+    static uint32_t random32();
+    static uint32_t random32(uint32_t min, uint32_t max);
 };
 
 }
