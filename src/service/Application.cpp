@@ -50,7 +50,7 @@ void Application::parseConfig(int argc, char *argv[])
 		}
 	}
 
-    if (g_stApplicationConfig.sLogPath != "-")
+    if (!g_stApplicationConfig.sLogPath.empty())
 	{
 		string sLogPath = g_stApplicationConfig.sLogPath + "/" + ServerConfig::Application + "/";
 		if (g_stApplicationConfig.stCommConfig.bIsSetEnabled)
@@ -62,7 +62,7 @@ void Application::parseConfig(int argc, char *argv[])
 	}
 	else
 	{
-		CLogManager::getInstance()->initLog(".", "-");
+		CLogManager::getInstance()->initLog("./", "");
 	}
 
     CLogManager::getInstance()->setLogLevel(g_stApplicationConfig.sLogLevel, g_stApplicationConfig.sFrameworkLogLevel);

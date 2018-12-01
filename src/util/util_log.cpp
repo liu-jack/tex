@@ -352,7 +352,7 @@ CLog *CLogManager::getInitLogByType(const string &sFileName, MfwLogType type)
 	{
 		return NULL;
 	}
-	if (m_mfwLogPrefix == "-")
+	if (m_mfwLogPrefix.empty())
 	{
 		return &g_dummyStdoutLog;
 	}
@@ -396,7 +396,7 @@ CLog *CLogManager::getInitLogByType(const string &sFileName, MfwLogType type)
 void CLogManager::initLog(const string &sLogPath, const string &sLogPrefix)
 {
 	CLockGuard<CMutex> lock(m_mfwLogMutex);
-	if (!m_mfwLogEnabled && !sLogPrefix.empty())
+	if (!m_mfwLogEnabled)
 	{
 		m_mfwLogPath = UtilFile::getAbsolutePath(sLogPath);
 		UtilFile::makeDirectoryRecursive(m_mfwLogPath);
