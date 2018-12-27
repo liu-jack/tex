@@ -153,6 +153,12 @@ public:
         return m_mTimeData.find(key) != m_mTimeData.end();
     }
 
+    void clear()
+    {
+        m_mTimeData.clear();
+        m_setTimeQueue.clear();
+    }
+
     void add(const T &key, const TimeType &time)
     {
         typename TimeDataType::iterator it = m_mTimeData.find(key);
