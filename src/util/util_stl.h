@@ -147,7 +147,7 @@ public:
     }
 
     template <typename Tp, typename Alloc, typename Key>
-    static void eraseVectorAll(vector<Tp, Alloc> &v, const Key &key)
+    static bool eraseVectorAll(vector<Tp, Alloc> &v, const Key &key)
     {
         bool ret = false;
         for (unsigned i = 0; i < v.size(); ) {
